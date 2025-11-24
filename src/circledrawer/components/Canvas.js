@@ -1,5 +1,8 @@
 import React from 'react';
 import CarrierOD from './CarrierOD';
+import EffectiveDiameter from './EffectiveDiameter';
+import BundleSpacer from './BundleSpacer';
+import DebugDistances from './DebugDistances';
 
 const Canvas = ({
   circles,
@@ -8,20 +11,39 @@ const Canvas = ({
   panOffset,
   isPanning,
   editingCircle,
+  editingBellOD,
+  editingSpacerOD,
   editValue,
+  bellEditValue,
+  spacerEditValue,
   inputRef,
+  bellInputRef,
+  spacerInputRef,
   handleMouseDown,
   handleDoubleClick,
+  handleBellDoubleClick,
+  handleSpacerDoubleClick,
   handleEditChange,
+  handleBellEditChange,
+  handleSpacerEditChange,
   handleEditKeyPress,
+  handleBellEditKeyPress,
+  handleSpacerEditKeyPress,
   saveEdit,
+  saveBellEdit,
+  saveSpacerEdit,
   isDragging,
   handlePanStart,
   handlePanMove,
   handlePanEnd,
   handleMouseMove,
   handleMouseUp,
-  handleWheel
+  handleWheel,
+  effectiveData,
+  showEffectiveDiameter,
+  showBundleSpacer,
+  runnerHeight,
+  showDebugDistances
 }) => {
   return (
     <div className="canvas-container">
@@ -58,6 +80,24 @@ const Canvas = ({
         <g transform={`translate(${panOffset.x}, ${panOffset.y}) scale(${zoom})`}>
           <rect x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid)" />
           
+          {/* Render Bundle Spacer (furthest back) */}
+          {showBundleSpacer && effectiveData && runnerHeight > 0 && (
+            <BundleSpacer 
+              effectiveData={effectiveData}
+              runnerHeight={runnerHeight}
+              zoom={zoom}
+            />
+          )}
+          
+          {/* Render Effective Diameter boundary */}
+          {showEffectiveDiameter && effectiveData && (
+            <EffectiveDiameter 
+              effectiveData={effectiveData}
+              zoom={zoom}
+            />
+          )}
+          
+          {/* Render all circles */}
           {circles.map((circle) => (
             <CarrierOD
               key={circle.id}
@@ -65,16 +105,39 @@ const Canvas = ({
               isSelected={circle.id === selectedCircle}
               zoom={zoom}
               editingCircle={editingCircle}
+              editingBellOD={editingBellOD}
+              editingSpacerOD={editingSpacerOD}
               editValue={editValue}
+              bellEditValue={bellEditValue}
+              spacerEditValue={spacerEditValue}
               inputRef={inputRef}
+              bellInputRef={bellInputRef}
+              spacerInputRef={spacerInputRef}
               onMouseDown={handleMouseDown}
               onDoubleClick={handleDoubleClick}
+              onBellDoubleClick={handleBellDoubleClick}
+              onSpacerDoubleClick={handleSpacerDoubleClick}
               onEditChange={handleEditChange}
+              onBellEditChange={handleBellEditChange}
+              onSpacerEditChange={handleSpacerEditChange}
               onEditKeyPress={handleEditKeyPress}
+              onBellEditKeyPress={handleBellEditKeyPress}
+              onSpacerEditKeyPress={handleSpacerEditKeyPress}
               onEditBlur={saveEdit}
+              onBellEditBlur={saveBellEdit}
+              onSpacerEditBlur={saveSpacerEdit}
               isDragging={isDragging}
             />
           ))}
+          
+          {/* Debug overlay - shows distances between circles */}
+          {showDebugDistances && (
+            <DebugDistances 
+              circles={circles}
+              zoom={zoom}
+              showDebug={showDebugDistances}
+            />
+          )}
         </g>
       </svg>
     </div>

@@ -8,23 +8,38 @@ export const useCircleManagement = () => {
   const [selectedCircle, setSelectedCircle] = useState(1);
   const [selectedType, setSelectedType] = useState(CIRCLE_TYPES.CARRIER_OD);
 
-const addCircle = () => {
-  const newId = Math.max(...circles.map(c => c.id), 0) + 1;
-  
-  let bellOD = null;
-  if (selectedType === CIRCLE_TYPES.CARRIER_OD) {
-    const bellInput = prompt("Enter Bell OD (leave blank or 0 for none):");
-    if (bellInput && bellInput.trim() !== '' && parseFloat(bellInput) > 0) {
-      bellOD = parseFloat(bellInput);
+  const addCircle = (commandData = null) => {
+    const newId = Math.max(...circles.map(c => c.id), 0) + 1;
+    
+    let bellOD = null;
+    let spacerOD = null;
+    let diameter = CIRCLE_DEFAULTS[selectedType].diameter;
+    
+    // If command data is provided (from command line), use it
+    if (commandData && selectedType === CIRCLE_TYPES.CARRIER_OD) {
+      diameter = commandData.carrierDiameter;
+      bellOD = commandData.bellOD;
+      spacerOD = commandData.spacerOD;
     }
-  }
-  
-  setCircles([
-    ...circles,
-    createCircle(newId, 200 + Math.random() * 200, 200 + Math.random() * 200, selectedType, bellOD)
-  ]);
-  setSelectedCircle(newId);
-};
+    
+    // Create the circle
+    const newCircle = createCircle(
+      newId, 
+      200 + Math.random() * 200, 
+      200 + Math.random() * 200, 
+      selectedType, 
+      bellOD,
+      spacerOD
+    );
+    
+    // Override the diameter if provided
+    if (commandData && commandData.carrierDiameter) {
+      newCircle.diameter = diameter;
+    }
+    
+    setCircles([...circles, newCircle]);
+    setSelectedCircle(newId);
+  };
 
   const deleteCircle = () => {
     if (circles.length > 1) {
@@ -48,16 +63,28 @@ const addCircle = () => {
   };
 
   const updateBellOD = (newBellOD) => {
-  setCircles(circles.map(circle => {
-    if (circle.id === selectedCircle && circle.type === CIRCLE_TYPES.CARRIER_OD) {
-      return { 
-        ...circle, 
-        bellOD: newBellOD > 0 ? newBellOD : null
-      };
-    }
-    return circle;
-  }));
-};
+    setCircles(circles.map(circle => {
+      if (circle.id === selectedCircle && circle.type === CIRCLE_TYPES.CARRIER_OD) {
+        return { 
+          ...circle, 
+          bellOD: newBellOD > 0 ? newBellOD : null
+        };
+      }
+      return circle;
+    }));
+  };
+
+  const updateSpacerOD = (newSpacerOD) => {
+    setCircles(circles.map(circle => {
+      if (circle.id === selectedCircle && circle.type === CIRCLE_TYPES.CARRIER_OD) {
+        return { 
+          ...circle, 
+          spacerOD: newSpacerOD > 0 ? newSpacerOD : null
+        };
+      }
+      return circle;
+    }));
+  };
 
   const selectedCircleData = circles.find(c => c.id === selectedCircle);
 
@@ -72,6 +99,7 @@ const addCircle = () => {
     addCircle,
     deleteCircle,
     updateDiameter,
-    updateBellOD
+    updateBellOD,
+    updateSpacerOD
   };
 };

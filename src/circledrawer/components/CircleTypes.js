@@ -11,10 +11,10 @@ export const CIRCLE_TYPES = {
 
 // Default colors for each circle type
 export const CIRCLE_COLORS = {
-  [CIRCLE_TYPES.CARRIER_OD]: '#3b82f6',  // Single blue color
-  [CIRCLE_TYPES.CASING]: '#1e40af',
-  [CIRCLE_TYPES.BELL_OD]: '#ef4444',     // Single red color
-  [CIRCLE_TYPES.SPACER_OD]: '#16a34a'
+  [CIRCLE_TYPES.CARRIER_OD]: '#3b82f6',  // Blue
+  [CIRCLE_TYPES.CASING]: '#1e40af',      // Dark blue
+  [CIRCLE_TYPES.BELL_OD]: '#ef4444',     // Red
+  [CIRCLE_TYPES.SPACER_OD]: '#16a34a'    // Green
 };
 
 // Default settings for each circle type
@@ -42,7 +42,7 @@ export const CIRCLE_DEFAULTS = {
   },
   [CIRCLE_TYPES.SPACER_OD]: {
     diameter: 1.5,
-    minDiameter: 0.25,
+    minDiameter: 0,
     maxDiameter: 20,
     step: 0.25,
     label: 'Spacer OD'
@@ -50,7 +50,7 @@ export const CIRCLE_DEFAULTS = {
 };
 
 // Create a new circle
-export const createCircle = (id, x, y, type = CIRCLE_TYPES.CARRIER_OD, bellOD = null) => {
+export const createCircle = (id, x, y, type = CIRCLE_TYPES.CARRIER_OD, bellOD = null, spacerOD = null) => {
   const defaults = CIRCLE_DEFAULTS[type];
   const color = CIRCLE_COLORS[type];
   
@@ -62,7 +62,8 @@ export const createCircle = (id, x, y, type = CIRCLE_TYPES.CARRIER_OD, bellOD = 
     color: color,
     type: type,
     label: defaults.label,
-    bellOD: bellOD
+    bellOD: bellOD,
+    spacerOD: spacerOD
   };
 };
 

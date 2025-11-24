@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCircleDisplayProps } from './CircleTypes';
+import { getCircleDisplayProps, CIRCLE_COLORS, CIRCLE_TYPES } from './CircleTypes';
 
 const CarrierOD = ({ 
   circle, 
@@ -128,6 +128,21 @@ const CarrierOD = ({
       >
         {circle.label}
       </text>
+
+      {/* Bell OD - dotted line */}
+{circle.bellOD && circle.bellOD > circle.diameter && (
+  <circle
+    cx={circle.x}
+    cy={circle.y}
+    r={(circle.bellOD * 96) / 2}
+    fill="none"
+    stroke={CIRCLE_COLORS[CIRCLE_TYPES.BELL_OD]}
+    strokeWidth={2 / zoom}
+    strokeDasharray={`${8 / zoom},${4 / zoom}`}
+    pointerEvents="none"
+  />
+)}
+
     </g>
   );
 };

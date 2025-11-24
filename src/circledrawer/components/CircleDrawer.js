@@ -19,8 +19,11 @@ const CircleDrawer = () => {
     selectedCircleData,
     addCircle,
     deleteCircle,
-    updateDiameter
+    updateDiameter,
+    updateBellOD
   } = useCircleManagement();
+
+  console.log('circles from hook:', circles); // ADD THIS LINE
 
   // Zoom and pan functionality
   const {
@@ -62,6 +65,7 @@ const CircleDrawer = () => {
         setSelectedType={setSelectedType}
         selectedCircleData={selectedCircleData}
         updateDiameter={updateDiameter}
+        updateBellOD={updateBellOD}  
         addCircle={addCircle}
         deleteCircle={deleteCircle}
         circles={circles}

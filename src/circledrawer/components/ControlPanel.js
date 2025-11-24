@@ -6,6 +6,7 @@ const ControlPanel = ({
   setSelectedType,
   selectedCircleData,
   updateDiameter,
+  updateBellOD,  
   addCircle,
   deleteCircle,
   circles,
@@ -64,6 +65,41 @@ const ControlPanel = ({
           </div>
         </div>
 
+        {/* Bell OD controls - only show for Carrier OD */}
+        {selectedCircleData && selectedCircleData.type === CIRCLE_TYPES.CARRIER_OD && (
+          <>
+            <div className="control-group">
+              <label>Bell OD (inches):</label>
+              <input
+                type="number"
+                value={selectedCircleData?.bellOD || ''}
+                onChange={(e) => updateBellOD(Number(e.target.value))}
+                placeholder="0 or blank for none"
+                min="0"
+                max="100"
+                step="0.25"
+                className="diameter-input"
+              />
+            </div>
+            <div className="control-group">
+              <label>Bell OD Slider:</label>
+              <input
+                type="range"
+                value={selectedCircleData?.bellOD || 0}
+                onChange={(e) => updateBellOD(Number(e.target.value))}
+                min="0"
+                max="100"
+                step="0.25"
+                className="diameter-slider"
+              />
+              <div className="slider-labels">
+                <span>0"</span>
+                <span>100"</span>
+              </div>
+            </div>
+          </>
+        )}
+
         <div className="button-group">
           <button onClick={addCircle} className="btn btn-primary">
             Add {getCircleTypeName(selectedType)}
@@ -71,7 +107,7 @@ const ControlPanel = ({
           <button 
             onClick={deleteCircle} 
             className="btn btn-danger"
-            disabled={circles.length <= 1}
+            disabled={!circles || circles.length <= 1}
           >
             Delete Circle
           </button>
@@ -102,31 +138,45 @@ const ControlPanel = ({
       {/* Info Section */}
       <div className="info-section">
         <h4>Circle Info</h4>
-        <div className="info-item">
-          <span>Type:</span>
-          <span className="info-value">{selectedCircleData?.label}</span>
-        </div>
-        <div className="info-item">
-          <span>Selected:</span>
-          <span className="info-value">#{selectedCircleData?.id}</span>
-        </div>
-        <div className="info-item">
-          <span>Diameter:</span>
-          <span className="info-value">{selectedCircleData?.diameter.toFixed(2)} in</span>
-        </div>
-        <div className="info-item">
-          <span>Radius:</span>
-          <span className="info-value">{(selectedCircleData?.diameter / 2).toFixed(2)} in</span>
-        </div>
-        <div className="info-item">
-          <span>Position:</span>
-          <span className="info-value">
-            ({selectedCircleData?.x.toFixed(0)}, {selectedCircleData?.y.toFixed(0)})
-          </span>
-        </div>
+        {selectedCircleData ? (
+          <>
+            <div className="info-item">
+              <span>Type:</span>
+              <span className="info-value">{selectedCircleData.label}</span>
+            </div>
+            <div className="info-item">
+              <span>Selected:</span>
+              <span className="info-value">#{selectedCircleData.id}</span>
+            </div>
+            <div className="info-item">
+              <span>Diameter:</span>
+              <span className="info-value">{selectedCircleData.diameter.toFixed(2)} in</span>
+            </div>
+            <div className="info-item">
+              <span>Radius:</span>
+              <span className="info-value">{(selectedCircleData.diameter / 2).toFixed(2)} in</span>
+            </div>
+            {selectedCircleData.bellOD && (
+              <div className="info-item">
+                <span>Bell OD:</span>
+                <span className="info-value">{selectedCircleData.bellOD.toFixed(2)} in</span>
+              </div>
+            )}
+            <div className="info-item">
+              <span>Position:</span>
+              <span className="info-value">
+                ({selectedCircleData.x.toFixed(0)}, {selectedCircleData.y.toFixed(0)})
+              </span>
+            </div>
+          </>
+        ) : (
+          <div className="info-item">
+            <span className="info-value">No circle selected</span>
+          </div>
+        )}
         <div className="info-item">
           <span>Total Circles:</span>
-          <span className="info-value">{circles.length}</span>
+          <span className="info-value">{circles?.length || 0}</span>
         </div>
       </div>
 

@@ -1,5 +1,21 @@
-import React from 'react';
-import { getCircleDisplayProps, CIRCLE_COLORS, CIRCLE_TYPES } from './CircleTypes';
+/**
+ * CarrierOD.js - Renders individual carrier circles with Bell, Spacer, and Runner overlays
+ * 
+ * Enhanced with visual runner rendering from RACI logic.
+ * Shows the actual spacer elements (runners) around the carrier.
+ */
+
+import React, { useMemo } from 'react';
+import { 
+  getCircleDisplayProps, 
+  CIRCLE_COLORS, 
+  CIRCLE_TYPES,
+  PX_PER_INCH 
+} from './CircleTypes';
+import SpacerRunners from './SpacerRunners';
+import { buildRunnerCountMap, generateRunners } from '../utils/runnerUtils';
+import { assignElementColors } from '../utils/colorUtils';
+import { distributeAngles } from '../utils/angleUtils';
 
 const CarrierOD = ({ 
   circle, 
@@ -27,18 +43,61 @@ const CarrierOD = ({
   onEditBlur,
   onBellEditBlur,
   onSpacerEditBlur,
-  isDragging 
+  isDragging,
+  showRunners = true  // NEW: Option to show/hide runners
 }) => {
   const { radiusInPixels } = getCircleDisplayProps(circle);
-  const bellRadiusInPixels = circle.bellOD ? (circle.bellOD * 96) / 2 : 0;
-  const spacerRadiusInPixels = circle.spacerOD ? (circle.spacerOD * 96) / 2 : 0;
+  const bellRadiusInPixels = circle.bellOD ? (circle.bellOD * PX_PER_INCH) / 2 : 0;
+  const spacerRadiusInPixels = circle.spacerOD ? (circle.spacerOD * PX_PER_INCH) / 2 : 0;
+
+  // Calculate runner data for visualization
+  const runnerData = useMemo(() => {
+    if (!circle.selectedSpacer?.configuration || circle.selectedSpacer.configuration.length === 0) {
+      return { runners: [], angleList: [] };
+    }
+
+    const configuration = circle.selectedSpacer.configuration;
+    const carrierOD = circle.diameter;
+
+    // Build runner visualization data
+    const runnerCountMap = buildRunnerCountMap(configuration);
+    const elementColors = assignElementColors(runnerCountMap);
+    const { runners, totalGroups } = generateRunners(configuration, elementColors);
+    const angleList = distributeAngles(runners, totalGroups, carrierOD);
+
+    return { runners, angleList };
+  }, [circle.selectedSpacer?.configuration, circle.diameter]);
+
+  // Determine spacer label text
+  const getSpacerLabelText = () => {
+    if (circle.selectedSpacer && circle.autoSpacerEnabled) {
+      return `${circle.selectedSpacer.spacerName} ø${circle.spacerOD.toFixed(2)}"`;
+    } else if (circle.spacerOD) {
+      return `Spacer ø${circle.spacerOD.toFixed(2)}"`;
+    }
+    return '';
+  };
+
+  // Get spacer info for tooltip
+  const getSpacerTooltip = () => {
+    if (!circle.selectedSpacer) return '';
+    const s = circle.selectedSpacer;
+    let tooltip = `${s.spacerName}\nRunner Height: ${s.runnerHeight}"`;
+    if (s.bellClearance !== null) {
+      tooltip += `\nBell Clearance: ${s.bellClearance.toFixed(2)}"`;
+    }
+    if (s.configuration && s.configuration.length > 0) {
+      const configStr = s.configuration.map(c => `${c.quantity}×${c.type}`).join(', ');
+      tooltip += `\nConfig: ${configStr}`;
+    }
+    return tooltip;
+  };
 
   return (
     <g>
       {/* Bell OD - Render FIRST so it's behind everything */}
       {circle.bellOD && circle.bellOD > circle.diameter && (
         <>
-          {/* Bell OD Circle - only responds to clicks on the STROKE, not the fill area */}
           <circle
             cx={circle.x}
             cy={circle.y}
@@ -55,7 +114,6 @@ const CarrierOD = ({
             pointerEvents="stroke"
           />
 
-          {/* Bell OD diameter line (only show when selected) */}
           {isSelected && (
             <line
               x1={circle.x - bellRadiusInPixels}
@@ -69,7 +127,6 @@ const CarrierOD = ({
             />
           )}
 
-          {/* Bell OD Label or Edit Input */}
           {editingBellOD === circle.id ? (
             <foreignObject
               x={circle.x - 50 / zoom}
@@ -115,22 +172,21 @@ const CarrierOD = ({
               }}
               style={{ cursor: 'pointer' }}
             >
-              Bell ø {circle.bellOD.toFixed(2)} in
+              Bell ø{circle.bellOD.toFixed(2)}"
             </text>
           )}
         </>
       )}
 
-      {/* Spacer OD - Render as GREEN SOLID CIRCLE */}
+      {/* Spacer OD Circle - Background */}
       {circle.spacerOD && circle.spacerOD > 0 && (
         <>
-          {/* Spacer OD Circle - SOLID green circle */}
           <circle
             cx={circle.x}
             cy={circle.y}
             r={spacerRadiusInPixels}
             fill={CIRCLE_COLORS[CIRCLE_TYPES.SPACER_OD]}
-            fillOpacity="0.2"
+            fillOpacity="0.1"
             stroke={CIRCLE_COLORS[CIRCLE_TYPES.SPACER_OD]}
             strokeWidth={2 / zoom}
             onDoubleClick={(e) => {
@@ -138,9 +194,10 @@ const CarrierOD = ({
               onSpacerDoubleClick(e, circle.id);
             }}
             style={{ cursor: 'pointer' }}
-          />
+          >
+            <title>{getSpacerTooltip()}</title>
+          </circle>
 
-          {/* Spacer OD diameter line (only show when selected) */}
           {isSelected && (
             <line
               x1={circle.x - spacerRadiusInPixels}
@@ -153,60 +210,21 @@ const CarrierOD = ({
               pointerEvents="none"
             />
           )}
-
-          {/* Spacer OD Label or Edit Input */}
-          {editingSpacerOD === circle.id ? (
-            <foreignObject
-              x={circle.x - 50 / zoom}
-              y={circle.y + spacerRadiusInPixels + 10 / zoom}
-              width={100 / zoom}
-              height={40 / zoom}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <input
-                  ref={spacerInputRef}
-                  type="number"
-                  value={spacerEditValue}
-                  onChange={onSpacerEditChange}
-                  onKeyDown={onSpacerEditKeyPress}
-                  onBlur={onSpacerEditBlur}
-                  step="0.25"
-                  min="0"
-                  max="20"
-                  style={{
-                    width: `${80 / zoom}px`,
-                    padding: `${5 / zoom}px`,
-                    border: `2px solid ${CIRCLE_COLORS[CIRCLE_TYPES.SPACER_OD]}`,
-                    borderRadius: '4px',
-                    fontSize: `${14 / zoom}px`,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    backgroundColor: '#fff'
-                  }}
-                />
-              </div>
-            </foreignObject>
-          ) : (
-            <text
-              x={circle.x}
-              y={circle.y + spacerRadiusInPixels + 20 / zoom}
-              textAnchor="middle"
-              fill={CIRCLE_COLORS[CIRCLE_TYPES.SPACER_OD]}
-              fontSize={13 / zoom}
-              fontWeight="bold"
-              onDoubleClick={(e) => {
-                e.stopPropagation();
-                onSpacerDoubleClick(e, circle.id);
-              }}
-              style={{ cursor: 'pointer' }}
-            >
-              Spacer ø {circle.spacerOD.toFixed(2)} in
-            </text>
-          )}
         </>
       )}
 
-      {/* Carrier OD Circle - Rendered AFTER Bell/Spacer so it's on top and clickable */}
+      {/* NEW: Render Spacer Runners (the visual element representation) */}
+      {showRunners && circle.spacerOD && runnerData.runners.length > 0 && (
+        <SpacerRunners
+          circle={circle}
+          runners={runnerData.runners}
+          angleList={runnerData.angleList}
+          zoom={zoom}
+          showRunners={showRunners}
+        />
+      )}
+
+      {/* Carrier OD Circle - Rendered AFTER Bell/Spacer so it's on top */}
       <circle
         cx={circle.x}
         cy={circle.y}
@@ -251,7 +269,6 @@ const CarrierOD = ({
             pointerEvents="none"
           />
           
-          {/* Diameter label or edit input for Carrier OD */}
           {editingCircle === circle.id ? (
             <foreignObject
               x={circle.x - 50 / zoom}
@@ -292,7 +309,74 @@ const CarrierOD = ({
               fontWeight="bold"
               pointerEvents="none"
             >
-              ø {circle.diameter.toFixed(2)} in
+              ø{circle.diameter.toFixed(2)}"
+            </text>
+          )}
+        </>
+      )}
+
+      {/* Spacer OD Label */}
+      {circle.spacerOD && circle.spacerOD > 0 && (
+        <>
+          {editingSpacerOD === circle.id ? (
+            <foreignObject
+              x={circle.x - 60 / zoom}
+              y={circle.y + spacerRadiusInPixels + 10 / zoom}
+              width={120 / zoom}
+              height={40 / zoom}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <input
+                  ref={spacerInputRef}
+                  type="number"
+                  value={spacerEditValue}
+                  onChange={onSpacerEditChange}
+                  onKeyDown={onSpacerEditKeyPress}
+                  onBlur={onSpacerEditBlur}
+                  step="0.25"
+                  min="0"
+                  max="100"
+                  style={{
+                    width: `${100 / zoom}px`,
+                    padding: `${5 / zoom}px`,
+                    border: `2px solid ${CIRCLE_COLORS[CIRCLE_TYPES.SPACER_OD]}`,
+                    borderRadius: '4px',
+                    fontSize: `${14 / zoom}px`,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    backgroundColor: '#fff'
+                  }}
+                />
+              </div>
+            </foreignObject>
+          ) : (
+            <text
+              x={circle.x}
+              y={circle.y + spacerRadiusInPixels + 20 / zoom}
+              textAnchor="middle"
+              fill={CIRCLE_COLORS[CIRCLE_TYPES.SPACER_OD]}
+              fontSize={12 / zoom}
+              fontWeight="bold"
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                onSpacerDoubleClick(e, circle.id);
+              }}
+              style={{ cursor: 'pointer' }}
+            >
+              {getSpacerLabelText()}
+            </text>
+          )}
+
+          {circle.autoSpacerEnabled && isSelected && (
+            <text
+              x={circle.x}
+              y={circle.y + spacerRadiusInPixels + 35 / zoom}
+              textAnchor="middle"
+              fill="#666"
+              fontSize={10 / zoom}
+              fontStyle="italic"
+            >
+              (auto-selected)
             </text>
           )}
         </>
@@ -311,7 +395,6 @@ const CarrierOD = ({
         #{circle.id}
       </text>
       
-      {/* Type label below ID */}
       <text
         x={circle.x}
         y={circle.y + 20 / zoom}

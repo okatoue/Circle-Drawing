@@ -3,6 +3,7 @@ import CarrierOD from './CarrierOD';
 import EffectiveDiameter from './EffectiveDiameter';
 import BundleSpacer from './BundleSpacer';
 import DebugDistances from './DebugDistances';
+import BundleSpacerRunners from './BundleSpacerRunners';
 
 const Canvas = ({
   circles,
@@ -43,7 +44,8 @@ const Canvas = ({
   showEffectiveDiameter,
   showBundleSpacer,
   runnerHeight,
-  showDebugDistances
+  showDebugDistances,
+  showBundleSpacerRunners,
 }) => {
   return (
     <div className="canvas-container">
@@ -86,6 +88,15 @@ const Canvas = ({
               effectiveData={effectiveData}
               runnerHeight={runnerHeight}
               zoom={zoom}
+            />
+          )}
+
+          {/* Render Bundle Spacer Runners around the hull */}
+          {showBundleSpacerRunners && effectiveData && effectiveData.hullPoints?.length >= 3 && (
+            <BundleSpacerRunners
+              effectiveData={effectiveData}
+              zoom={zoom}
+              showRunners={true}
             />
           )}
           

@@ -1,0 +1,631 @@
+[
+    {
+      "id": 1,
+      "name": "S/T 20",
+      "fixedRunnerHeight": 0.79,
+      "maxWeight": 250,
+      "carrierODRanges": [
+          { "min": 2.32, "max": 2.67, "elements": { "S20": 2 } },
+          { "min": 2.71, "max": 2.95, "elements": { "S20": 1, "T20": 1 } },
+          { "min": 2.99, "max": 3.3, "elements": { "S20": 2 } },
+          { "min": 3.46, "max": 4.01, "elements": { "S20": 3 } },
+          { "min": 4.06, "max": 4.21, "elements": { "S20": 2, "T20": 1 } },
+          { "min": 4.25, "max": 4.48, "elements": { "S20": 1, "T20": 2 } },
+          { "min": 4.53, "max": 4.72, "elements": { "S20": 3 } },
+          { "min": 4.76, "max": 5.19, "elements": { "S20": 4 } },
+          { "min": 5.24, "max": 5.51, "elements": { "S20": 3, "T20": 1 } }
+        ]
+    },
+    {
+      "id": 2,
+      "name": "C/D/I 15",
+      "fixedRunnerHeight": 0.59,
+      "maxWeight": 440,
+      "carrierODRanges": [
+          { "min": 1.62, "max": 2.05, "elements": { "I15": 1 } },
+          { "min": 2.12, "max": 3.15, "elements": { "C15": 1 } },
+          { "min": 3.19, "max": 3.9, "elements": { "D15": 1 } },
+          { "min": 3.94, "max": 5.24, "elements": { "C15": 1, "D15": 1 } }
+        ]
+    },
+    {
+      "id": 3,
+      "name": "A/B 19",
+      "fixedRunnerHeight": 0.75,
+      "maxWeight": 770,
+      "carrierODRanges": [
+          { "min": 2.12, "max": 2.52, "elements": { "B19": 2 } },
+          { "min": 2.36, "max": 2.76, "elements": { "A19": 1, "B19": 1 } },
+          { "min": 2.68, "max": 3.03, "elements": { "A19": 2 } },
+          { "min": 3.35, "max": 3.86, "elements": { "B19": 3 } },
+          { "min": 3.54, "max": 4.17, "elements": { "A19": 1, "B19": 2 } },
+          { "min": 3.86, "max": 4.57, "elements": { "A19": 3 } },
+          { "min": 4.65, "max": 5.2, "elements": { "B19": 4 } },
+          { "min": 4.92, "max": 5.51, "elements": { "A19": 1, "B19": 3 } }
+        ]
+    },
+      {
+      "id": 4,
+      "name": "A/B 36",
+      "fixedRunnerHeight": 1.42,
+      "maxWeight": 550,
+      "carrierODRanges": [
+          { "min": 2.17, "max": 2.52, "elements": { "A36": 2 } },
+          { "min": 2.36, "max": 2.76, "elements": { "A36": 1, "B36": 1 } },
+          { "min": 2.68, "max": 3.03, "elements": { "A36": 2 } },
+          { "min": 3.35, "max": 3.86, "elements": { "B36": 3 } },
+          { "min": 3.54, "max": 4.17, "elements": { "A36": 1, "B36": 2 } },
+          { "min": 3.86, "max": 4.57, "elements": { "A36": 3 } },
+          { "min": 4.65, "max": 5.2, "elements": { "B36": 4 } },
+          { "min": 4.92, "max": 5.51, "elements": { "A36": 1, "B36": 3 } }
+        ]
+    },
+    {
+      "id": 5,
+      "name": "A/B 50",
+      "fixedRunnerHeight": 1.97,
+      "maxWeight": 440,
+      "carrierODRanges": [
+          { "min": 2.17, "max": 2.52, "elements": { "A50": 2 } },
+          { "min": 2.36, "max": 2.76, "elements": { "A50": 1, "B50": 1 } },
+          { "min": 2.68, "max": 3.03, "elements": { "A50": 2 } },
+          { "min": 3.35, "max": 3.86, "elements": { "B50": 3 } },
+          { "min": 3.54, "max": 4.17, "elements": { "A50": 1, "B50": 2 } },
+          { "min": 3.86, "max": 4.57, "elements": { "A50": 3 } },
+          { "min": 4.65, "max": 5.2, "elements": { "B50": 4 } },
+          { "min": 4.92, "max": 5.51, "elements": { "A50": 1, "B50": 3 } }
+        ]
+    },
+   {
+      "id": 6,
+      "name": "F/G 25",
+      "fixedRunnerHeight": 0.98,
+      "maxWeight": 1540,
+      "carrierODRanges": [
+          { "min": 3.62, "max": 4.41, "elements": { "F25": 1, "G25": 1 } },
+          { "min": 4.45, "max": 5.98, "elements": { "F25": 2 } },
+          { "min": 6.02, "max": 7.4, "elements": { "F25": 2, "G25": 1 } },
+          { "min": 7.44, "max": 8.82, "elements": { "F25": 3 } },
+          { "min": 8.86, "max": 10.24, "elements": { "F25": 3, "G25": 1 } },
+          { "min": 10.28, "max": 11.61, "elements": { "F25": 4 } },
+          { "min": 11.65, "max": 12.32, "elements": { "F25": 4, "G25": 1 } },
+          { "min": 12.36, "max": 14.8, "elements": { "F25": 5 } },
+          { "min": 14.84, "max": 17.56, "elements": { "F25": 6 } },
+          { "min": 17.6, "max": 20.79, "elements": { "F25": 7 } }
+        ]
+    },
+    {
+      "id": 7,
+      "name": "F/G 41",
+      "fixedRunnerHeight": 1.61,
+      "maxWeight": 1870,
+      "carrierODRanges": [
+          { "min": 3.62, "max": 4.41, "elements": { "F41": 1, "G41": 1 } },
+          { "min": 4.45, "max": 5.98, "elements": { "F41": 2 } },
+          { "min": 6.02, "max": 7.4, "elements": { "F41": 2, "G41": 1 } },
+          { "min": 7.44, "max": 8.82, "elements": { "F41": 3 } },
+          { "min": 8.86, "max": 10.24, "elements": { "F41": 3, "G41": 1 } },
+          { "min": 10.28, "max": 11.61, "elements": { "F41": 4 } },
+          { "min": 11.65, "max": 12.32, "elements": { "F41": 4, "G41": 1 } },
+          { "min": 12.36, "max": 14.8, "elements": { "F41": 5 } },
+          { "min": 14.84, "max": 17.56, "elements": { "F41": 6 } },
+          { "min": 17.6, "max": 20.79, "elements": { "F41": 7 } }
+        ]
+    },
+    {
+      "id": 8,
+      "name": "F/G 60",
+      "fixedRunnerHeight": 2.36,
+      "maxWeight": 1870,
+      "carrierODRanges": [
+          { "min": 3.62, "max": 4.41, "elements": { "F60": 1, "G60": 1 } },
+          { "min": 4.45, "max": 5.98, "elements": { "F60": 2 } },
+          { "min": 6.02, "max": 7.4, "elements": { "F60": 2, "G60": 1 } },
+          { "min": 7.44, "max": 8.82, "elements": { "F60": 3 } },
+          { "min": 8.86, "max": 10.24, "elements": { "F60": 3, "G60": 1 } },
+          { "min": 10.28, "max": 11.61, "elements": { "F60": 4 } },
+          { "min": 11.65, "max": 12.32, "elements": { "F60": 4, "G60": 1 } },
+          { "min": 12.36, "max": 14.8, "elements": { "F60": 5 } },
+          { "min": 14.84, "max": 17.56, "elements": { "F60": 6 } },
+          { "min": 17.6, "max": 20.79, "elements": { "F60": 7 } },
+                    { "min": 22.00, "max": 25.00, "elements": { "F60": 8 } }
+
+        ]
+    },
+      {
+      "id": 9,
+      "name": "F/G 75",
+      "fixedRunnerHeight": 2.95,
+      "maxWeight": 1870,
+      "carrierODRanges": [
+          { "min": 3.62, "max": 4.41, "elements": { "F75": 1, "G75": 1 } },
+          { "min": 4.45, "max": 5.98, "elements": { "F75": 2 } },
+          { "min": 6.02, "max": 7.4, "elements": { "F75": 2, "G75": 1 } },
+          { "min": 7.44, "max": 8.82, "elements": { "F75": 3 } },
+          { "min": 8.86, "max": 10.24, "elements": { "F75": 3, "G75": 1 } },
+          { "min": 10.28, "max": 11.61, "elements": { "F75": 4 } },
+          { "min": 11.65, "max": 12.32, "elements": { "F75": 4, "G75": 1 } },
+          { "min": 12.36, "max": 14.8, "elements": { "F75": 5 } },
+          { "min": 14.84, "max": 17.56, "elements": { "F75": 6 } },
+          { "min": 17.6, "max": 20.79, "elements": { "F75": 7 } },
+                              { "min": 22.00, "max": 25.00, "elements": { "F60": 8 } }
+
+        ]
+    },
+  {
+      "id": 10,
+      "name": "M/N 18",
+      "fixedRunnerHeight": 0.70,
+      "maxWeight": 2425,
+      "carrierODRanges": [
+          { "min": 5.63, "max": 6.61, "elements": { "M18": 1, "N18": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "M18": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "M18": 1, "N18": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "M18": 2, "N18": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "M18": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "M18": 2, "N18": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "M18": 3, "N18": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "M18": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "M18": 4, "N18": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "M18": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "M18": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "M18": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "M18": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "M18": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "M18": 10 } }
+        ]
+    },
+    {
+      "id": 11,
+      "name": "M/N 25",
+      "fixedRunnerHeight": 0.98,
+      "maxWeight": 2535,
+      "carrierODRanges":[
+          { "min": 5.63, "max": 6.61, "elements": { "M25": 1, "N25": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "M25": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "M25": 1, "N25": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "M25": 2, "N25": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "M25": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "M25": 2, "N25": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "M25": 3, "N25": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "M25": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "M25": 4, "N25": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "M25": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "M25": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "M25": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "M25": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "M25": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "M25": 10 } }
+        ]
+    },
+    {
+      "id": 12,
+      "name": "M/N 36",
+      "fixedRunnerHeight": 1.42,
+      "maxWeight": 4400,
+      "carrierODRanges": [
+          { "min": 5.63, "max": 6.61, "elements": { "M36": 1, "N36": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "M36": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "M36": 1, "N36": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "M36": 2, "N36": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "M36": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "M36": 2, "N36": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "M36": 3, "N36": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "M36": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "M36": 4, "N36": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "M36": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "M36": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "M36": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "M36": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "M36": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "M36": 10 } }
+        ]
+    },
+  {
+      "id": 13,
+      "name": "M 41",
+      "fixedRunnerHeight": 1.61,
+      "maxWeight": 3968,
+      "carrierODRanges": [
+          { "min": 6.65, "max": 7.91, "elements": { "M41": 2 } },
+          { "min": 9.96, "max": 11.26, "elements": { "M41": 3 } },
+          { "min": 13.31, "max": 15.55, "elements": { "M41": 4 } },
+          { "min": 16.61, "max": 19.88, "elements": { "M41": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "M41": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "M41": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "M41": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "M41": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "M41": 10 } }
+        ]
+    },
+    {
+      "id": 14,
+      "name": "M/N 50",
+      "fixedRunnerHeight": 1.97,
+      "maxWeight": 3638,
+      "carrierODRanges":[
+          { "min": 5.63, "max": 6.61, "elements": { "M50": 1, "N50": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "M50": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "M50": 1, "N50": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "M50": 2, "N50": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "M50": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "M50": 2, "N50": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "M50": 3, "N50": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "M50": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "M50": 4, "N50": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "M50": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "M50": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "M50": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "M50": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "M50": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "M50": 10 } }
+        ]
+    },
+    {
+      "id": 15,
+      "name": "M/N 75",
+      "fixedRunnerHeight": 2.95,
+      "maxWeight": 4300,
+      "carrierODRanges": [
+          { "min": 5.63, "max": 6.61, "elements": { "M75": 1, "N75": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "M75": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "M75": 1, "N75": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "M75": 2, "N75": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "M75": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "M75": 2, "N75": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "M75": 3, "N75": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "M75": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "M75": 4, "N75": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "M75": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "M75": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "M75": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "M75": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "M75": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "M75": 10 } }
+        ]
+    },
+  {
+      "id": 16,
+      "name": "M/N 90",
+      "fixedRunnerHeight": 3.54,
+      "maxWeight": 3858,
+      "carrierODRanges": [
+          { "min": 5.63, "max": 6.64, "elements": { "M90": 1, "N90": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "M90": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "M90": 1, "N90": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "M90": 2, "N90": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "M90": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "M90": 2, "N90": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "M90": 3, "N90": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "M90": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "M90": 4, "N90": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "M90": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "M90": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "M90": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "M90": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "M90": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "M90": 10 } }
+        ]
+    },
+  {
+      "id": 17,
+      "name": "P/Q 110",
+      "fixedRunnerHeight": 4.33,
+      "maxWeight": 2315,
+      "carrierODRanges": [
+          { "min": 5.63, "max": 6.61, "elements": { "P110": 1, "Q110": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "P110": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "P110": 1, "Q110": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "P110": 2, "Q110": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "P110": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "P110": 2, "Q110": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "P110": 3, "Q110": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "P110": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "P110": 4, "Q110": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "P110": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "P110": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "P110": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "P110": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "P110": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "P110": 10 } }
+        ]
+    },
+  {
+      "id": 18,
+      "name": "P/Q 120",
+      "fixedRunnerHeight": 4.72,
+      "maxWeight": 2200,
+      "carrierODRanges": [
+          { "min": 5.63, "max": 6.61, "elements": { "P120": 1, "Q120": 1 } },
+          { "min": 6.65, "max": 7.91, "elements": { "P120": 2 } },
+          { "min": 7.95, "max": 8.94, "elements": { "P120": 1, "Q120": 2 } },
+          { "min": 8.98, "max": 9.92, "elements": { "P120": 2, "Q120": 1 } },
+          { "min": 9.96, "max": 11.26, "elements": { "P120": 3 } },
+          { "min": 11.3, "max": 12.24, "elements": { "P120": 2, "Q120": 2 } },
+          { "min": 12.28, "max": 13.27, "elements": { "P120": 3, "Q120": 1 } },
+          { "min": 13.31, "max": 15.55, "elements": { "P120": 4 } },
+          { "min": 15.59, "max": 16.57, "elements": { "P120": 4, "Q120": 1 } },
+          { "min": 16.61, "max": 19.88, "elements": { "P120": 5 } },
+          { "min": 19.92, "max": 23.23, "elements": { "P120": 6 } },
+          { "min": 23.27, "max": 26.54, "elements": { "P120": 7 } },
+          { "min": 26.57, "max": 29.88, "elements": { "P120": 8 } },
+          { "min": 29.92, "max": 33.45, "elements": { "P120": 9 } },
+          { "min": 33.46, "max": 39.96, "elements": { "P120": 10 } }
+        ]
+    },
+    {
+      "id": 19,
+      "name": "L 100",
+      "fixedRunnerHeight": 3.94,
+      "maxWeight": 5500,
+      "carrierODRanges": [
+        { "min": 10.10, "max": 11.00, "elements": { "L100": 3 } },
+        { "min": 14.17, "max": 16.34, "elements": { "L100": 4 } },
+        { "min": 17.30, "max": 20.07, "elements": { "L100": 5 } },
+        { "min": 21.26, "max": 24.01, "elements": { "L100": 6 } },
+        { "min": 24.61, "max": 28.14, "elements": { "L100": 7 } },
+        { "min": 28.15, "max": 31.69, "elements": { "L100": 8 } },
+        { "min": 31.69, "max": 35.23, "elements": { "L100": 9 } },
+        { "min": 35.24, "max": 38.77, "elements": { "L100": 10 } },
+        { "min": 38.78, "max": 42.32, "elements": { "L100": 11 } },
+        { "min": 42.32, "max": 45.66, "elements": { "L100": 12 } },
+        { "min": 45.67, "max": 49.21, "elements": { "L100": 13 } },
+        { "min": 49.21, "max": 52.75, "elements": { "L100": 14 } },
+        { "min": 52.76, "max": 56.29, "elements": { "L100": 15 } },
+        { "min": 56.3, "max": 59.84, "elements": { "L100": 16 } },
+        { "min": 59.84, "max": 63.38, "elements": { "L100": 17 } },
+        { "min": 63.39, "max": 68.89, "elements": { "L100": 18 } }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "L 125",
+      "fixedRunnerHeight": 4.92,
+      "maxWeight": 4400,
+      "carrierODRanges": [
+        { "min": 10.10, "max": 11.00, "elements": { "L125": 3 } },
+        { "min": 14.17, "max": 16.34, "elements": { "L125": 4 } },
+        { "min": 17.30, "max": 20.07, "elements": { "L125": 5 } },
+        { "min": 21.26, "max": 24.01, "elements": { "L125": 6 } },
+        { "min": 24.61, "max": 28.14, "elements": { "L125": 7 } },
+        { "min": 28.15, "max": 31.69, "elements": { "L125": 8 } },
+        { "min": 31.69, "max": 35.23, "elements": { "L125": 9 } },
+        { "min": 35.24, "max": 38.77, "elements": { "L125": 10 } },
+        { "min": 38.78, "max": 42.32, "elements": { "L125": 11 } },
+        { "min": 42.32, "max": 45.66, "elements": { "L125": 12 } },
+        { "min": 45.67, "max": 49.21, "elements": { "L125": 13 } },
+        { "min": 49.21, "max": 52.75, "elements": { "L125": 14 } },
+        { "min": 52.76, "max": 56.29, "elements": { "L125": 15 } },
+        { "min": 56.3, "max": 59.84, "elements": { "L125": 16 } },
+        { "min": 59.84, "max": 63.38, "elements": { "L125": 17 } },
+        { "min": 63.39, "max": 68.89, "elements": { "L125": 18 } }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "L 150",
+      "fixedRunnerHeight": 5.91,
+      "maxWeight": 3300,
+      "carrierODRanges": [
+        { "min": 10.10, "max": 11.00, "elements": { "L150": 3 } },
+        { "min": 14.17, "max": 16.34, "elements": { "L150": 4 } },
+        { "min": 17.30, "max": 20.07, "elements": { "L150": 5 } },
+        { "min": 21.26, "max": 24.01, "elements": { "L150": 6 } },
+        { "min": 24.61, "max": 28.14, "elements": { "L150": 7 } },
+        { "min": 28.15, "max": 31.69, "elements": { "L150": 8 } },
+        { "min": 31.69, "max": 35.23, "elements": { "L150": 9 } },
+        { "min": 35.24, "max": 38.77, "elements": { "L150": 10 } },
+        { "min": 38.78, "max": 42.32, "elements": { "L150": 11 } },
+        { "min": 42.32, "max": 45.66, "elements": { "L150": 12 } },
+        { "min": 45.67, "max": 49.21, "elements": { "L150": 13 } },
+        { "min": 49.21, "max": 52.75, "elements": { "L150": 14 } },
+        { "min": 52.76, "max": 56.29, "elements": { "L150": 15 } },
+        { "min": 56.3, "max": 59.84, "elements": { "L150": 16 } },
+        { "min": 59.84, "max": 63.38, "elements": { "L150": 17 } },
+        { "min": 63.39, "max": 68.89, "elements": { "L150": 18 } }
+      ]
+    },
+  {
+      "id": 22,
+      "name": "L 175",
+      "fixedRunnerHeight": 6.89,
+      "maxWeight": 3300,
+      "carrierODRanges": [
+        { "min": 10.10, "max": 11.00, "elements": { "L175": 3 } },
+        { "min": 14.17, "max": 16.34, "elements": { "L175": 4 } },
+        { "min": 17.30, "max": 20.07, "elements": { "L175": 5 } },
+        { "min": 21.26, "max": 24.01, "elements": { "L175": 6 } },
+        { "min": 24.61, "max": 28.14, "elements": { "L175": 7 } },
+        { "min": 28.15, "max": 31.69, "elements": { "L175": 8 } },
+        { "min": 31.69, "max": 35.23, "elements": { "L175": 9 } },
+        { "min": 35.24, "max": 38.77, "elements": { "L175": 10 } },
+        { "min": 38.78, "max": 42.32, "elements": { "L175": 11 } },
+        { "min": 42.32, "max": 45.66, "elements": { "L175": 12 } },
+        { "min": 45.67, "max": 49.21, "elements": { "L175": 13 } },
+        { "min": 49.21, "max": 52.75, "elements": { "L175": 14 } },
+        { "min": 52.76, "max": 56.29, "elements": { "L175": 15 } },
+        { "min": 56.3, "max": 59.84, "elements": { "L175": 16 } },
+        { "min": 59.84, "max": 63.38, "elements": { "L175": 17 } },
+        { "min": 63.39, "max": 68.89, "elements": { "L175": 18 } }
+      ]
+    },
+  {
+      "id": 23,
+      "name": "L 200",
+      "fixedRunnerHeight": 7.87,
+      "maxWeight": 3300,
+      "carrierODRanges": [        
+          { "min": 10.10, "max": 11.00, "elements": { "L200": 3 } },
+          { "min": 14.17, "max": 16.34, "elements": { "L200": 4 } },
+          { "min": 17.30, "max": 20.07, "elements": { "L200": 5 } },
+          { "min": 21.26, "max": 24.01, "elements": { "L200": 6 } },
+          { "min": 24.61, "max": 28.14, "elements": { "L200": 7 } },
+          { "min": 28.15, "max": 31.69, "elements": { "L200": 8 } },
+          { "min": 31.69, "max": 35.23, "elements": { "L200": 9 } },
+          { "min": 35.24, "max": 38.77, "elements": { "L200": 10 } },
+          { "min": 38.78, "max": 42.32, "elements": { "L200": 11 } },
+          { "min": 42.32, "max": 45.66, "elements": { "L200": 12 } },
+          { "min": 45.67, "max": 49.21, "elements": { "L200": 13 } },
+          { "min": 49.21, "max": 52.75, "elements": { "L200": 14 } },
+          { "min": 52.76, "max": 56.29, "elements": { "L200": 15 } },
+          { "min": 56.3, "max": 59.84, "elements": { "L200": 16 } },
+          { "min": 59.84, "max": 63.38, "elements": { "L200": 17 } },
+          { "min": 63.39, "max": 68.89, "elements": { "L200": 18 } }
+        ]
+    },
+  {
+        "id": 24,
+        "name": "E/H 25",
+        "fixedRunnerHeight": 0.98,
+        "maxWeight": 11000,
+        "carrierODRanges": [
+          { "min": 18.35, "max": 20.86, "elements": { "E25": 5 } },
+          { "min": 20.91, "max": 24.81, "elements": { "E25": 6 } },
+          { "min": 24.84, "max": 28.74, "elements": { "E25": 7 } },
+          { "min": 28.78, "max": 32.67, "elements": { "E25": 8 } },
+          { "min": 32.29, "max": 35.82, "elements": { "E25": 9 } },
+          { "min": 35.83, "max": 40.55, "elements": { "E25": 10 } },
+          { "min": 40.59, "max": 45.62, "elements": { "E25": 11 } },
+          { "min": 45.67, "max": 53.54, "elements": { "E25": 13 } },
+          { "min": 53.58, "max": 62.99, "elements": { "E25": 15 } },
+          { "min": 63.03, "max": 70.82, "elements": { "E25": 17 } },
+          { "min": 70.87, "max": 83.07, "elements": { "E25": 20 } },
+          { "min": 83.11, "max": 95.66, "elements": { "E25": 23 } },
+          { "min": 95.71, "max": 112.59, "elements": { "E25": 27 } },
+          { "min": 112.64, "max": 134.4, "elements": { "E25": 32 } }
+        ]
+      },
+      {
+        "id": 25,
+        "name": "E/H 41",
+        "fixedRunnerHeight": 1.61,
+        "maxWeight": 11000,
+        "carrierODRanges": [
+          { "min": 18.35, "max": 20.86, "elements": { "E41": 5 } },
+          { "min": 20.91, "max": 24.81, "elements": { "E41": 6 } },
+          { "min": 24.84, "max": 28.74, "elements": { "E41": 7 } },
+          { "min": 28.78, "max": 32.67, "elements": { "E41": 8 } },
+          { "min": 32.29, "max": 35.82, "elements": { "E41": 9 } },
+          { "min": 35.83, "max": 40.55, "elements": { "E41": 10 } },
+          { "min": 40.59, "max": 45.62, "elements": { "E41": 11 } },
+          { "min": 45.67, "max": 53.54, "elements": { "E41": 13 } },
+          { "min": 53.58, "max": 62.99, "elements": { "E41": 15 } },
+          { "min": 63.03, "max": 70.82, "elements": { "E41": 17 } },
+          { "min": 70.87, "max": 83.07, "elements": { "E41": 20 } },
+          { "min": 83.11, "max": 95.66, "elements": { "E41": 23 } },
+          { "min": 95.71, "max": 112.59, "elements": { "E41": 27 } },
+          { "min": 112.64, "max": 134.4, "elements": { "E41": 32 } }
+        ]
+      },
+  {
+        "id": 26,
+        "name": "E/H 60",
+        "fixedRunnerHeight": 2.36,
+        "maxWeight": 11000,
+        "carrierODRanges": [
+          { "min": 18.35, "max": 20.86, "elements": { "E60": 5 } },
+          { "min": 20.91, "max": 24.81, "elements": { "E60": 6 } },
+          { "min": 24.84, "max": 28.74, "elements": { "E60": 7 } },
+          { "min": 28.78, "max": 32.67, "elements": { "E60": 8 } },
+          { "min": 32.29, "max": 35.82, "elements": { "E60": 9 } },
+          { "min": 35.83, "max": 40.55, "elements": { "E60": 10 } },
+          { "min": 40.59, "max": 45.62, "elements": { "E60": 11 } },
+          { "min": 45.67, "max": 53.54, "elements": { "E60": 13 } },
+          { "min": 53.58, "max": 62.99, "elements": { "E60": 15 } },
+          { "min": 63.03, "max": 70.82, "elements": { "E60": 17 } },
+          { "min": 70.87, "max": 83.07, "elements": { "E60": 20 } },
+          { "min": 83.11, "max": 95.66, "elements": { "E60": 23 } },
+          { "min": 95.71, "max": 112.59, "elements": { "E60": 27 } },
+          { "min": 112.64, "max": 134.4, "elements": { "E60": 32 } }
+        ]
+      },
+  {
+        "id": 27,
+        "name": "E/H 75",
+        "fixedRunnerHeight": 2.95,
+        "maxWeight": 8800,
+        "carrierODRanges": [
+          { "min": 18.35, "max": 20.86, "elements": { "E75": 5 } },
+          { "min": 20.91, "max": 24.81, "elements": { "E75": 6 } },
+          { "min": 24.84, "max": 28.74, "elements": { "E75": 7 } },
+          { "min": 28.78, "max": 32.67, "elements": { "E75": 8 } },
+          { "min": 32.29, "max": 35.82, "elements": { "E75": 9 } },
+          { "min": 35.83, "max": 40.55, "elements": { "E75": 10 } },
+          { "min": 40.59, "max": 45.62, "elements": { "E75": 11 } },
+          { "min": 45.67, "max": 53.54, "elements": { "E75": 13 } },
+          { "min": 53.58, "max": 62.99, "elements": { "E75": 15 } },
+          { "min": 63.03, "max": 70.82, "elements": { "E75": 17 } },
+          { "min": 70.87, "max": 83.07, "elements": { "E75": 20 } },
+          { "min": 83.11, "max": 95.66, "elements": { "E75": 23 } },
+          { "min": 95.71, "max": 112.59, "elements": { "E75": 27 } },
+          { "min": 112.64, "max": 134.4, "elements": { "E75": 32 } }
+        ]
+      },
+  {
+        "id": 28,
+        "name": "E/H 90",
+        "fixedRunnerHeight": 3.54,
+        "maxWeight": 9000,
+        "carrierODRanges": [
+          { "min": 18.35, "max": 20.86, "elements": { "E90": 5 } },
+          { "min": 20.91, "max": 24.81, "elements": { "E90": 6 } },
+          { "min": 24.84, "max": 28.74, "elements": { "E90": 7 } },
+          { "min": 28.78, "max": 32.67, "elements": { "E90": 8 } },
+          { "min": 32.29, "max": 35.82, "elements": { "E90": 9 } },
+          { "min": 35.83, "max": 40.55, "elements": { "E90": 10 } },
+          { "min": 40.59, "max": 45.62, "elements": { "E90": 11 } },
+          { "min": 45.67, "max": 53.54, "elements": { "E90": 13 } },
+          { "min": 53.58, "max": 62.99, "elements": { "E90": 15 } },
+          { "min": 63.03, "max": 70.82, "elements": { "E90": 17 } },
+          { "min": 70.87, "max": 83.07, "elements": { "E90": 20 } },
+          { "min": 83.11, "max": 95.66, "elements": { "E90": 23 } },
+          { "min": 95.71, "max": 112.59, "elements": { "E90": 27 } },
+          { "min": 112.64, "max": 134.4, "elements": { "E90": 32 } }
+        ]
+      },
+  {
+        "id": 29,
+        "name": "E/H 110",
+        "fixedRunnerHeight": 4.33,
+        "maxWeight": 7600,
+        "carrierODRanges": [
+          { "min": 18.35, "max": 20.86, "elements": { "E110": 5 } },
+          { "min": 20.91, "max": 24.81, "elements": { "E110": 6 } },
+          { "min": 24.84, "max": 28.74, "elements": { "E110": 7 } },
+          { "min": 28.78, "max": 32.67, "elements": { "E110": 8 } },
+          { "min": 32.29, "max": 35.82, "elements": { "E110": 9 } },
+          { "min": 35.83, "max": 40.55, "elements": { "E110": 10 } },
+          { "min": 40.59, "max": 45.62, "elements": { "E110": 11 } },
+          { "min": 45.67, "max": 53.54, "elements": { "E110": 13 } },
+          { "min": 53.58, "max": 62.99, "elements": { "E110": 15 } },
+          { "min": 63.03, "max": 70.82, "elements": { "E110": 17 } },
+          { "min": 70.87, "max": 83.07, "elements": { "E110": 20 } },
+          { "min": 83.11, "max": 95.66, "elements": { "E110": 23 } },
+          { "min": 95.71, "max": 112.59, "elements": { "E110": 27 } },
+          { "min": 112.64, "max": 134.4, "elements": { "E110": 32 } }
+        ]
+      },
+  {
+        "id": 30,
+        "name": "E/H 130",
+        "fixedRunnerHeight": 5.11,
+        "maxWeight": 7150,
+        "carrierODRanges": [
+          { "min": 18.35, "max": 20.86, "elements": { "E130": 5 } },
+          { "min": 20.91, "max": 24.81, "elements": { "E130": 6 } },
+          { "min": 24.84, "max": 28.74, "elements": { "E130": 7 } },
+          { "min": 28.78, "max": 32.67, "elements": { "E130": 8 } },
+          { "min": 32.29, "max": 35.82, "elements": { "E130": 9 } },
+          { "min": 35.83, "max": 40.55, "elements": { "E130": 10 } },
+          { "min": 40.59, "max": 45.62, "elements": { "E130": 11 } },
+          { "min": 45.67, "max": 53.54, "elements": { "E130": 13 } },
+          { "min": 53.58, "max": 62.99, "elements": { "E130": 15 } },
+          { "min": 63.03, "max": 70.82, "elements": { "E130": 17 } },
+          { "min": 70.87, "max": 83.07, "elements": { "E130": 20 } },
+          { "min": 83.11, "max": 95.66, "elements": { "E130": 23 } },
+          { "min": 95.71, "max": 112.59, "elements": { "E130": 27 } },
+          { "min": 112.64, "max": 134.4, "elements": { "E130": 32 } }
+        ]
+      }
+  ]
+  

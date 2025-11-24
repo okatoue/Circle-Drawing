@@ -1,3 +1,10 @@
+/**
+ * ControlPanel.js - Left sidebar UI controls
+ * 
+ * Enhanced with spacer selection controls from RACI logic.
+ * Shows available spacers and allows manual selection or auto-mode.
+ */
+
 import React from 'react';
 import { CIRCLE_TYPES, CIRCLE_DEFAULTS, getCircleTypeName } from './CircleTypes';
 
@@ -23,10 +30,21 @@ const ControlPanel = ({
   setShowBundleSpacer,
   runnerHeight,
   setRunnerHeight,
-  effectiveData
+  effectiveData,
+  // NEW: Spacer-related props
+  toggleAutoSpacer,
+  selectSpacerById,
+  getValidSpacersForSelectedCircle,
+    showBundleSpacerRunners,
+  setShowBundleSpacerRunners
 }) => {
   // Count carrier OD circles
   const carrierCount = circles.filter(c => c.type === CIRCLE_TYPES.CARRIER_OD).length;
+  
+  // Get valid spacers for current selection
+  const validSpacers = selectedCircleData?.type === CIRCLE_TYPES.CARRIER_OD 
+    ? (getValidSpacersForSelectedCircle ? getValidSpacersForSelectedCircle() : [])
+    : [];
 
   return (
     <div className="controls-panel">
@@ -111,56 +129,129 @@ const ControlPanel = ({
               </div>
             </div>
 
-            {/* Spacer OD controls */}
-            <div className="control-group">
-              <label>Spacer OD (inches):</label>
-              <input
-                type="number"
-                value={selectedCircleData?.spacerOD || ''}
-                onChange={(e) => updateSpacerOD(Number(e.target.value))}
-                placeholder="0 or blank for none"
-                min="0"
-                max="20"
-                step="0.25"
-                className="diameter-input"
-              />
-            </div>
-            <div className="control-group">
-              <label>Spacer OD Slider:</label>
-              <input
-                type="range"
-                value={selectedCircleData?.spacerOD || 0}
-                onChange={(e) => updateSpacerOD(Number(e.target.value))}
-                min="0"
-                max="20"
-                step="0.25"
-                className="diameter-slider"
-              />
-              <div className="slider-labels">
-                <span>0"</span>
-                <span>20"</span>
+            {/* Spacer Selection Section */}
+            <div className="control-section spacer-section">
+              <h4>Spacer Selection (RACI)</h4>
+              
+              {/* Auto/Manual Toggle */}
+              <div className="control-group">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={selectedCircleData?.autoSpacerEnabled ?? true}
+                    onChange={() => toggleAutoSpacer && toggleAutoSpacer()}
+                  />
+                  Auto-select spacer
+                </label>
               </div>
+
+              {/* Spacer Dropdown (when in manual mode or to override) */}
+              {validSpacers.length > 0 && (
+                <div className="control-group">
+                  <label>Spacer Model:</label>
+                  <select
+                    value={selectedCircleData?.selectedSpacer?.spacerId || ''}
+                    onChange={(e) => {
+                      const spacerId = parseInt(e.target.value, 10);
+                      if (selectSpacerById && spacerId) {
+                        selectSpacerById(spacerId);
+                      }
+                    }}
+                    className="spacer-select"
+                    disabled={validSpacers.length === 0}
+                  >
+                    {validSpacers.map(spacer => (
+                      <option key={spacer.id} value={spacer.id}>
+                        {spacer.name} (OD: {spacer.spacerOD.toFixed(2)}")
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* Spacer Info Display */}
+              {selectedCircleData?.selectedSpacer && (
+                <div className="spacer-info">
+                  <div className="info-row">
+                    <span className="info-label">Model:</span>
+                    <span className="info-value">{selectedCircleData.selectedSpacer.spacerName}</span>
+                  </div>
+                  <div className="info-row">
+                    <span className="info-label">Runner Height:</span>
+                    <span className="info-value">{selectedCircleData.selectedSpacer.runnerHeight}"</span>
+                  </div>
+                  <div className="info-row">
+                    <span className="info-label">Spacer OD:</span>
+                    <span className="info-value">{selectedCircleData.spacerOD?.toFixed(2)}"</span>
+                  </div>
+                  {selectedCircleData.selectedSpacer.bellClearance !== null && (
+                    <div className="info-row">
+                      <span className="info-label">Bell Clearance:</span>
+                      <span className="info-value" style={{
+                        color: selectedCircleData.selectedSpacer.bellClearance >= 0.6 ? '#16a34a' : 
+                               selectedCircleData.selectedSpacer.bellClearance >= 0.4 ? '#ca8a04' : '#dc2626'
+                      }}>
+                        {selectedCircleData.selectedSpacer.bellClearance.toFixed(2)}"
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* No spacer available warning */}
+              {validSpacers.length === 0 && selectedCircleData?.diameter > 0 && (
+                <div className="warning-message">
+                  No spacers available for this carrier OD
+                  {selectedCircleData?.bellOD > 0 && " and bell OD combination"}
+                </div>
+              )}
+
+              {/* Manual Spacer OD override */}
+              {!selectedCircleData?.autoSpacerEnabled && (
+                <div className="control-group">
+                  <label>Manual Spacer OD:</label>
+                  <input
+                    type="number"
+                    value={selectedCircleData?.spacerOD || ''}
+                    onChange={(e) => updateSpacerOD(Number(e.target.value))}
+                    placeholder="0 or blank for none"
+                    min="0"
+                    max="100"
+                    step="0.25"
+                    className="diameter-input"
+                  />
+                </div>
+              )}
             </div>
           </>
         )}
 
         <div className="button-group">
-          <button onClick={addCircle} className="btn btn-primary">
-            Add {getCircleTypeName(selectedType)}
+          <button onClick={() => addCircle()} className="add-btn">
+            Add Circle
           </button>
-          <button 
-            onClick={deleteCircle} 
-            className="btn btn-danger"
-            disabled={!circles || circles.length <= 1}
-          >
-            Delete Circle
+          <button onClick={deleteCircle} className="delete-btn" disabled={circles.length <= 1}>
+            Delete
           </button>
         </div>
       </div>
 
-      {/* Effective Diameter Section */}
+      {/* View Controls Section */}
       <div className="control-section">
-        <h3>Effective Diameter</h3>
+        <h3>View Controls</h3>
+        <div className="button-group">
+          <button onClick={zoomIn}>Zoom In</button>
+          <button onClick={zoomOut}>Zoom Out</button>
+          <button onClick={resetZoom}>Reset</button>
+        </div>
+        <div className="zoom-level">
+          Zoom: {(zoom * 100).toFixed(0)}%
+        </div>
+      </div>
+
+      {/* Display Options */}
+      <div className="control-section">
+        <h3>Display Options</h3>
         
         <div className="control-group">
           <label className="checkbox-label">
@@ -168,163 +259,100 @@ const ControlPanel = ({
               type="checkbox"
               checked={showEffectiveDiameter}
               onChange={(e) => setShowEffectiveDiameter(e.target.checked)}
-              className="checkbox-input"
             />
-            Show Effective OD Boundary
+            Show Effective Diameter
           </label>
         </div>
 
-        {effectiveData && (
-          <div className="effective-info">
-            <div className="info-row">
-              <span className="info-label">Carrier Circles:</span>
-              <span className="info-value">{carrierCount}</span>
-            </div>
-            <div className="info-row">
-              <span className="info-label">Effective OD:</span>
-              <span className="info-value effective-od">{effectiveData.effectiveDiameter.toFixed(3)} in</span>
-            </div>
-            <div className="info-row">
-              <span className="info-label">Perimeter:</span>
-              <span className="info-value">{effectiveData.perimeter.toFixed(3)} in</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Bundle Spacer Section - NEW */}
-      <div className="control-section">
-        <h3>Bundle Spacer</h3>
-        
-        <div className="control-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={showBundleSpacer}
-              onChange={(e) => setShowBundleSpacer(e.target.checked)}
-              className="checkbox-input"
-            />
-            Show Bundle Spacer
-          </label>
-        </div>
-
-        <div className="control-group">
-          <label>Runner Height (inches):</label>
-          <input
-            type="number"
-            value={runnerHeight}
-            onChange={(e) => setRunnerHeight(Number(e.target.value))}
-            placeholder="Enter runner height"
-            min="0"
-            max="10"
-            step="0.25"
-            className="diameter-input"
-          />
-        </div>
-
-        <div className="control-group">
-          <label>Runner Height Slider:</label>
-          <input
-            type="range"
-            value={runnerHeight}
-            onChange={(e) => setRunnerHeight(Number(e.target.value))}
-            min="0"
-            max="10"
-            step="0.25"
-            className="diameter-slider"
-          />
-          <div className="slider-labels">
-            <span>0"</span>
-            <span>10"</span>
-          </div>
-        </div>
-
-        {runnerHeight > 0 && (
-          <div className="effective-info" style={{ marginTop: '10px' }}>
-            <div className="info-row">
-              <span className="info-label">Runner Height:</span>
-              <span className="info-value" style={{ color: '#16a34a' }}>{runnerHeight.toFixed(2)} in</span>
-            </div>
-            <p style={{ fontSize: '0.75rem', color: '#a0aec0', marginTop: '8px' }}>
-              Creates offset boundary {runnerHeight.toFixed(2)}" from effective OD
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Debug Section */}
-      <div className="control-section">
-        <h3>Debug Tools</h3>
-        
         <div className="control-group">
           <label className="checkbox-label">
             <input
               type="checkbox"
               checked={showDebugDistances}
               onChange={(e) => setShowDebugDistances(e.target.checked)}
-              className="checkbox-input"
             />
-            Show Center Distances
+            Show Debug Distances
           </label>
         </div>
-        
-        <div className="debug-info">
-          <p style={{ fontSize: '0.75rem', color: '#a0aec0', marginTop: '8px' }}>
-            Shows actual center-to-center distances between circles.
-          </p>
-          <p style={{ fontSize: '0.75rem', color: '#a0aec0', marginTop: '4px' }}>
-            <span style={{ color: '#00ff00' }}>Green</span> = Touching perfectly
-            <br />
-            <span style={{ color: '#ff0000' }}>Red</span> = Gap between circles
-            <br />
-            <span style={{ color: '#ffff00' }}>Yellow</span> = Overlapping
-          </p>
-        </div>
-      </div>
 
-      {/* View Controls Section */}
-      <div className="control-section">
-        <h3>View Controls</h3>
-        
-        <div className="zoom-display">
-          <label>Zoom: {(zoom * 100).toFixed(0)}%</label>
+        <div className="control-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={showBundleSpacer}
+              onChange={(e) => setShowBundleSpacer(e.target.checked)}
+            />
+            Show Bundle Spacer
+          </label>
         </div>
 
-        <div className="button-group">
-          <button onClick={zoomIn} className="btn btn-secondary">
-            Zoom In (+)
-          </button>
-          <button onClick={zoomOut} className="btn btn-secondary">
-            Zoom Out (-)
-          </button>
-          <button onClick={resetZoom} className="btn btn-secondary">
-            Reset View
-          </button>
-        </div>
+        {showBundleSpacer && (
+          <div className="control-group">
+            <label>Bundle Runner Height (in):</label>
+            <input
+              type="number"
+              value={runnerHeight}
+              onChange={(e) => setRunnerHeight(Number(e.target.value))}
+              min="0"
+              max="10"
+              step="0.25"
+              className="diameter-input"
+            />
+          </div>
+        )}
       </div>
 
       {/* Info Section */}
-      <div className="info-section">
-        <h4>Circle Info</h4>
-        {selectedCircleData ? (
-          <div className="info-content">
-            <p><strong>ID:</strong> #{selectedCircleData.id}</p>
-            <p><strong>Type:</strong> {selectedCircleData.label}</p>
-            <p><strong>Diameter:</strong> {selectedCircleData.diameter.toFixed(2)} in</p>
-            <p><strong>Radius:</strong> {(selectedCircleData.diameter / 2).toFixed(2)} in</p>
+      <div className="control-section info-section">
+        <h3>Info</h3>
+        <div className="info-grid">
+          <div className="info-item">
+            <span className="info-label">Carriers:</span>
+            <span className="info-value">{carrierCount}</span>
+          </div>
+          {effectiveData && (
+            <>
+              <div className="info-item">
+                <span className="info-label">Effective OD:</span>
+                <span className="info-value">{effectiveData.effectiveDiameter.toFixed(2)}"</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Perimeter:</span>
+                <span className="info-value">{effectiveData.perimeter.toFixed(2)}"</span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Selected Circle Details */}
+      {selectedCircleData && (
+        <div className="control-section selected-info">
+          <h3>Selected: #{selectedCircleData.id}</h3>
+          <div className="info-grid">
+            <div className="info-item">
+              <span className="info-label">Type:</span>
+              <span className="info-value">{getCircleTypeName(selectedCircleData.type)}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Carrier OD:</span>
+              <span className="info-value">{selectedCircleData.diameter.toFixed(2)}"</span>
+            </div>
             {selectedCircleData.bellOD && (
-              <p><strong>Bell OD:</strong> {selectedCircleData.bellOD.toFixed(2)} in</p>
+              <div className="info-item">
+                <span className="info-label">Bell OD:</span>
+                <span className="info-value">{selectedCircleData.bellOD.toFixed(2)}"</span>
+              </div>
             )}
             {selectedCircleData.spacerOD && (
-              <p><strong>Spacer OD:</strong> {selectedCircleData.spacerOD.toFixed(2)} in</p>
+              <div className="info-item">
+                <span className="info-label">Spacer OD:</span>
+                <span className="info-value">{selectedCircleData.spacerOD.toFixed(2)}"</span>
+              </div>
             )}
-            <p><strong>Position:</strong> ({Math.round(selectedCircleData.x)}, {Math.round(selectedCircleData.y)})</p>
-            <p><strong>Total Circles:</strong> {circles.length}</p>
           </div>
-        ) : (
-          <p>No circle selected</p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

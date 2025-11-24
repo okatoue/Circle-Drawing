@@ -1,0 +1,242 @@
+[
+  {
+    "element": "A19",
+    "numRunners": 4,
+    "runnerWidth": 25
+  },
+  {
+    "element": "A36",
+    "numRunners": 4,
+    "runnerWidth": 25
+  },
+  {
+    "element": "A50",
+    "numRunners": 4,
+    "runnerWidth": 25
+  },
+  {
+    "element": "B19",
+    "numRunners": 3,
+    "runnerWidth": 25
+  },
+  {
+    "element": "B36",
+    "numRunners": 3,
+    "runnerWidth": 25
+  },
+  {
+    "element": "B50",
+    "numRunners": 3,
+    "runnerWidth": 25
+  },
+  {
+    "element": "C15",
+    "numRunners": 4,
+    "runnerWidth": 10
+  },
+  {
+    "element": "D15",
+    "numRunners": 5,
+    "runnerWidth": 10
+  },
+  {
+    "element": "I15",
+    "numRunners": 3,
+    "runnerWidth": 10
+  },
+  {
+    "element": "S20",
+    "numRunners": 3,
+    "runnerWidth": 10
+  },
+  {
+    "element": "I15",
+    "numRunners": 3,
+    "runnerWidth": 10
+  },
+  {
+    "element": "F25",
+    "numRunners": 3,
+    "runnerWidth": 45
+  },
+  {
+    "element": "F41",
+    "numRunners": 3,
+    "runnerWidth": 45
+  },
+  {
+    "element": "F60",
+    "numRunners": 3,
+    "runnerWidth": 45
+  },
+  {
+    "element": "F75",
+    "numRunners": 3,
+    "runnerWidth": 45
+  },
+  {
+    "element": "G25",
+    "numRunners": 1,
+    "runnerWidth": 45
+  },
+  {
+    "element": "G41",
+    "numRunners": 1,
+    "runnerWidth": 45
+  },
+  {
+    "element": "G60",
+    "numRunners": 1,
+    "runnerWidth": 45
+  },
+  {
+    "element": "G75",
+    "numRunners": 1,
+    "runnerWidth": 45
+  },
+  {
+    "element": "M18",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "M25",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "M36",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "M41",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "M50",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "M75",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "M90",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "N18",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "N25",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "N36",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "N50",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "N75",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "N90",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "P110",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "P120",
+    "numRunners": 4,
+    "runnerWidth": 66
+  },
+  {
+    "element": "Q110",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "Q120",
+    "numRunners": 2,
+    "runnerWidth": 66
+  },
+  {
+    "element": "L100",
+    "numRunners": 4,
+    "runnerWidth": 74
+  },
+  {
+    "element": "L125",
+    "numRunners": 4,
+    "runnerWidth": 74
+  },
+  {
+    "element": "L150",
+    "numRunners": 4,
+    "runnerWidth": 74
+  },
+  {
+    "element": "L175",
+    "numRunners": 4,
+    "runnerWidth": 74
+  },
+  {
+    "element": "L200",
+    "numRunners": 4,
+    "runnerWidth": 74
+  },
+  {
+    "element": "E25",
+    "numRunners": 4,
+    "runnerWidth": 80
+  },
+  {
+    "element": "E41",
+    "numRunners": 4,
+    "runnerWidth": 80
+  },
+  {
+    "element": "E60",
+    "numRunners": 4,
+    "runnerWidth": 80
+  },
+  {
+    "element": "E75",
+    "numRunners": 4,
+    "runnerWidth": 80
+  },
+  {
+    "element": "E90",
+    "numRunners": 4,
+    "runnerWidth": 80
+  },
+  {
+    "element": "E110",
+    "numRunners": 4,
+    "runnerWidth": 80
+  },
+  {
+    "element": "E130",
+    "numRunners": 4,
+    "runnerWidth": 80
+  }
+]

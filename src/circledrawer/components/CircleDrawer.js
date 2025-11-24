@@ -18,20 +18,23 @@ const CircleDrawer = () => {
   const [showBundleSpacer, setShowBundleSpacer] = useState(false);
   const [runnerHeight, setRunnerHeight] = useState(2);
 
-  const {
-    circles,
-    setCircles,
-    selectedCircle,
-    setSelectedCircle,
-    selectedType,
-    setSelectedType,
-    selectedCircleData,
-    addCircle,
-    deleteCircle,
-    updateDiameter,
-    updateBellOD,
-    updateSpacerOD
-  } = useCircleManagement();
+const {
+  circles,
+  setCircles,
+  selectedCircle,
+  setSelectedCircle,
+  selectedType,
+  setSelectedType,
+  selectedCircleData,
+  addCircle,
+  deleteCircle,
+  updateDiameter,
+  updateBellOD,
+  updateSpacerOD,
+  toggleAutoSpacer,
+  selectSpacerById,
+  getValidSpacersForSelectedCircle
+} = useCircleManagement();
 
   const {
     zoom,
@@ -135,6 +138,9 @@ const CircleDrawer = () => {
           runnerHeight={runnerHeight}
           setRunnerHeight={setRunnerHeight}
           effectiveData={effectiveData}
+            toggleAutoSpacer={toggleAutoSpacer}
+  selectSpacerById={selectSpacerById}
+  getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
         />
         
         <Canvas

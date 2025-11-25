@@ -71,45 +71,64 @@ export const useCircleDragging = (
    * - Spacer vs Bell: CAN overlap
    * - Bell vs Bell: CAN overlap
    */
-  const getMinDistance = (movingCircle, otherCircle) => {
-    const movingCarrier = getCarrierRadius(movingCircle);
-    const movingBell = getBellRadius(movingCircle);
-    const movingSpacerRadius = getSpacerRadius(movingCircle);
+  /**
+ * COLLISION RULES:
+ * - Carrier OD vs Carrier OD: CANNOT overlap (ALWAYS enforced)
+ * - Bell OD vs Carrier OD: CANNOT overlap (UNLESS bypassBellSpacer is true)
+ * - Spacer OD vs Carrier OD: CANNOT overlap (UNLESS bypassBellSpacer is true)
+ * - Spacer vs Spacer: CAN overlap (staggered positioning)
+ * - Spacer vs Bell: CAN overlap
+ * - Bell vs Bell: CAN overlap
+ */
+const getMinDistance = (movingCircle, otherCircle) => {
+  const movingCarrier = getCarrierRadius(movingCircle);
+  const movingBell = getBellRadius(movingCircle);
+  const movingSpacerRadius = getSpacerRadius(movingCircle);
 
-    const otherCarrier = getCarrierRadius(otherCircle);
-    const otherBell = getBellRadius(otherCircle);
-    const otherSpacerRadius = getSpacerRadius(otherCircle);
+  const otherCarrier = getCarrierRadius(otherCircle);
+  const otherBell = getBellRadius(otherCircle);
+  const otherSpacerRadius = getSpacerRadius(otherCircle);
 
-    // Start with carrier-to-carrier (always applies)
-    let minDist = movingCarrier + otherCarrier;
+  // Check if either circle has bypass mode enabled
+  const movingBypasses = movingCircle.bypassBellSpacer === true;
+  const otherBypasses = otherCircle.bypassBellSpacer === true;
 
-    // Moving circle's Bell cannot intrude into other's Carrier
-    if (movingBell > 0) {
-      minDist = Math.max(minDist, movingBell + otherCarrier);
-    }
+  // Start with carrier-to-carrier (ALWAYS applies - never bypass this)
+  let minDist = movingCarrier + otherCarrier;
 
-    // Moving circle's Spacer cannot intrude into other's Carrier
-    if (movingSpacerRadius > 0) {
-      minDist = Math.max(minDist, movingSpacerRadius + otherCarrier);
-    }
+  // === BELL COLLISION RULES ===
+  // Moving circle's Bell cannot intrude into other's Carrier
+  // SKIP if moving circle has bypass enabled
+  if (movingBell > 0 && !movingBypasses) {
+    minDist = Math.max(minDist, movingBell + otherCarrier);
+  }
 
-    // Moving circle's Carrier cannot intrude into other's Bell
-    if (otherBell > 0) {
-      minDist = Math.max(minDist, movingCarrier + otherBell);
-    }
+  // Moving circle's Carrier cannot intrude into other's Bell
+  // SKIP if other circle has bypass enabled
+  if (otherBell > 0 && !otherBypasses) {
+    minDist = Math.max(minDist, movingCarrier + otherBell);
+  }
 
-    // Moving circle's Carrier cannot intrude into other's Spacer
-    if (otherSpacerRadius > 0) {
-      minDist = Math.max(minDist, movingCarrier + otherSpacerRadius);
-    }
+  // === SPACER COLLISION RULES ===
+  // Moving circle's Spacer cannot intrude into other's Carrier
+  // SKIP if moving circle has bypass enabled
+  if (movingSpacerRadius > 0 && !movingBypasses) {
+    minDist = Math.max(minDist, movingSpacerRadius + otherCarrier);
+  }
 
-    // We intentionally do NOT check:
-    // - Bell vs Bell (can overlap)
-    // - Spacer vs Spacer (can overlap - staggered positioning)
-    // - Bell vs Spacer (can overlap)
+  // Moving circle's Carrier cannot intrude into other's Spacer
+  // SKIP if other circle has bypass enabled
+  if (otherSpacerRadius > 0 && !otherBypasses) {
+    minDist = Math.max(minDist, movingCarrier + otherSpacerRadius);
+  }
 
-    return minDist;
-  };
+  // We intentionally do NOT check:
+  // - Bell vs Bell (can overlap)
+  // - Spacer vs Spacer (can overlap - staggered positioning)
+  // - Bell vs Spacer (can overlap)
+
+  return minDist;
+};
 
   // ============================================================
   // CORE COLLISION ALGORITHM: ITERATIVE POSITION RELAXATION

@@ -94,7 +94,9 @@ export const createCircle = (
     // NEW: Store selected spacer details
     selectedSpacer: null,
     // NEW: Flag for auto vs manual spacer selection
-    autoSpacerEnabled: autoSelectSpacer && type === CIRCLE_TYPES.CARRIER_OD
+    autoSpacerEnabled: autoSelectSpacer && type === CIRCLE_TYPES.CARRIER_OD,
+    // NEW: When true, this carrier ignores bell/spacer collision
+    bypassBellSpacer: false
   };
   
   // Auto-select spacer if enabled and this is a carrier

@@ -15,6 +15,7 @@ const ControlPanel = ({
   updateDiameter,
   updateBellOD,
   updateSpacerOD,
+  updateCircle, 
   addCircle,
   deleteCircle,
   circles,
@@ -35,12 +36,16 @@ const ControlPanel = ({
   toggleAutoSpacer,
   selectSpacerById,
   getValidSpacersForSelectedCircle,
-    showBundleSpacerRunners,
-  setShowBundleSpacerRunners
+  showBundleSpacerRunners,
+  setShowBundleSpacerRunners,
+  // NEW: Bypass bell/spacer rules toggle
+  updateBypassBellSpacer
 }) => {
+
+
   // Count carrier OD circles
   const carrierCount = circles.filter(c => c.type === CIRCLE_TYPES.CARRIER_OD).length;
-  
+
   // Get valid spacers for current selection
   const validSpacers = selectedCircleData?.type === CIRCLE_TYPES.CARRIER_OD 
     ? (getValidSpacersForSelectedCircle ? getValidSpacersForSelectedCircle() : [])
@@ -129,8 +134,61 @@ const ControlPanel = ({
               </div>
             </div>
 
+            {/* Bypass Collision Rules Checkbox - only show for Carrier OD */}
+            <div
+              style={{
+                marginTop: '15px',
+                padding: '10px',
+                backgroundColor: '#2d2d2d',
+                borderRadius: '8px',
+                border: '1px solid #444'
+              }}
+            >
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  cursor: 'pointer',
+                  color: '#fff'
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedCircleData.bypassBellSpacer || false}
+                  onChange={(e) => {
+                    if (updateBypassBellSpacer) {
+                      updateBypassBellSpacer(e.target.checked);
+                    }
+                  }}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    cursor: 'pointer'
+                  }}
+                />
+                <span style={{ fontSize: '14px' }}>
+                  Bypass Bell/Spacer Rules
+                </span>
+              </label>
+              <p
+                style={{
+                  fontSize: '11px',
+                  color: '#888',
+                  marginTop: '5px',
+                  marginBottom: '0'
+                }}
+              >
+                When checked, this carrier can pass through bell ODs and spacers
+                (but NOT other carriers)
+              </p>
+            </div>
+
             {/* Spacer Selection Section */}
             <div className="control-section spacer-section">
+              <h4>Spacer Selection (RACI)</h4>
+              {/* ...existing spacer UI unchanged... */}
+
               <h4>Spacer Selection (RACI)</h4>
               
               {/* Auto/Manual Toggle */}

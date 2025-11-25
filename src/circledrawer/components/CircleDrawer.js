@@ -31,6 +31,7 @@ const {
   updateDiameter,
   updateBellOD,
   updateSpacerOD,
+  updateCircle,  // <-- ADD THIS LINE
   toggleAutoSpacer,
   selectSpacerById,
   getValidSpacersForSelectedCircle
@@ -111,6 +112,8 @@ const {
     addCircle(commandData);
   };
 
+  const [showBundleSpacerRunners, setShowBundleSpacerRunners] = useState(false);
+
   return (
     <div className="circle-drawer">
       <h1>Circle Drawer</h1>
@@ -122,6 +125,7 @@ const {
           updateDiameter={updateDiameter}
           updateBellOD={updateBellOD}
           updateSpacerOD={updateSpacerOD}
+          updateCircle={updateCircle} 
           addCircle={handleAddCircle}
           deleteCircle={deleteCircle}
           circles={circles}
@@ -183,6 +187,9 @@ const {
           showBundleSpacer={showBundleSpacer}
           runnerHeight={runnerHeight}
           showDebugDistances={showDebugDistances}
+            showBundleSpacerRunners={showBundleSpacerRunners}
+  setShowBundleSpacerRunners={setShowBundleSpacerRunners}
+
         />
       </div>
 

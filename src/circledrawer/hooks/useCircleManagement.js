@@ -242,6 +242,13 @@ export const useCircleManagement = () => {
     }));
   }, [selectedCircle]);
 
+  const updateCircle = useCallback((circleId, updates) => {
+  setCircles(prevCircles => prevCircles.map(circle => {
+    if (circle.id !== circleId) return circle;
+    return { ...circle, ...updates };
+  }));
+}, []);
+
   /**
    * Toggle auto-spacer selection on/off
    */
@@ -336,7 +343,7 @@ export const useCircleManagement = () => {
     updateDiameter,
     updateBellOD,
     updateSpacerOD,
-    // NEW: Spacer-related functions
+updateCircle,
     toggleAutoSpacer,
     selectSpacerById,
     getValidSpacersForSelectedCircle,

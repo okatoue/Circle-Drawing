@@ -18,24 +18,25 @@ const CircleDrawer = () => {
   const [showBundleSpacer, setShowBundleSpacer] = useState(false);
   const [runnerHeight, setRunnerHeight] = useState(2);
 
-const {
-  circles,
-  setCircles,
-  selectedCircle,
-  setSelectedCircle,
-  selectedType,
-  setSelectedType,
-  selectedCircleData,
-  addCircle,
-  deleteCircle,
-  updateDiameter,
-  updateBellOD,
-  updateSpacerOD,
-  updateCircle,  // <-- ADD THIS LINE
-  toggleAutoSpacer,
-  selectSpacerById,
-  getValidSpacersForSelectedCircle
-} = useCircleManagement();
+  const {
+    circles,
+    setCircles,
+    selectedCircle,
+    setSelectedCircle,
+    selectedType,
+    setSelectedType,
+    selectedCircleData,
+    addCircle,
+    deleteCircle,
+    updateDiameter,
+    updateBellOD,
+    updateSpacerOD,
+    updateCircle,  // <-- ADD THIS LINE
+    toggleAutoSpacer,
+    selectSpacerById,
+    getValidSpacersForSelectedCircle,
+    updateBypassBellSpacer
+  } = useCircleManagement();
 
   const {
     zoom,
@@ -142,9 +143,10 @@ const {
           runnerHeight={runnerHeight}
           setRunnerHeight={setRunnerHeight}
           effectiveData={effectiveData}
-            toggleAutoSpacer={toggleAutoSpacer}
-  selectSpacerById={selectSpacerById}
-  getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
+          toggleAutoSpacer={toggleAutoSpacer}
+          selectSpacerById={selectSpacerById}
+          getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
+          updateBypassBellSpacer={updateBypassBellSpacer}
         />
         
         <Canvas
@@ -186,11 +188,11 @@ const {
           showEffectiveDiameter={showEffectiveDiameter}
           showBundleSpacer={showBundleSpacer}
           runnerHeight={runnerHeight}
-          showDebugDistances={showDebugDistances}
+            showDebugDistances={showDebugDistances}
             showBundleSpacerRunners={showBundleSpacerRunners}
-  setShowBundleSpacerRunners={setShowBundleSpacerRunners}
+            setShowBundleSpacerRunners={setShowBundleSpacerRunners}
 
-        />
+          />
       </div>
 
       {/* Command Line Component */}

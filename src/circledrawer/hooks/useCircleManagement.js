@@ -250,6 +250,21 @@ export const useCircleManagement = () => {
 }, []);
 
   /**
+   * Toggle bypass flag for bell/spacer collision rules on the selected carrier
+   */
+  const updateBypassBellSpacer = useCallback((enabled) => {
+    setCircles(prevCircles => prevCircles.map(circle => {
+      if (circle.id !== selectedCircle) return circle;
+      if (circle.type !== CIRCLE_TYPES.CARRIER_OD) return circle;
+
+      return {
+        ...circle,
+        bypassBellSpacer: enabled
+      };
+    }));
+  }, [selectedCircle]);
+
+  /**
    * Toggle auto-spacer selection on/off
    */
   const toggleAutoSpacer = useCallback(() => {
@@ -347,6 +362,7 @@ updateCircle,
     toggleAutoSpacer,
     selectSpacerById,
     getValidSpacersForSelectedCircle,
-    updateCircleSpacer
+    updateCircleSpacer,
+    updateBypassBellSpacer
   };
 };

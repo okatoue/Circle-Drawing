@@ -179,8 +179,8 @@ const ControlPanel = ({
                   marginBottom: '0'
                 }}
               >
-                When checked, this carrier can pass through bell ODs and spacers
-                (but NOT other carriers)
+                When checked, this carrier can enter other spacer territories
+                (bells and other carriers still block movement)
               </p>
             </div>
 
@@ -204,28 +204,36 @@ const ControlPanel = ({
               </div>
 
               {/* Spacer Dropdown (when in manual mode or to override) */}
-              {validSpacers.length > 0 && (
-                <div className="control-group">
-                  <label>Spacer Model:</label>
-                  <select
-                    value={selectedCircleData?.selectedSpacer?.spacerId || ''}
-                    onChange={(e) => {
-                      const spacerId = parseInt(e.target.value, 10);
-                      if (selectSpacerById && spacerId) {
-                        selectSpacerById(spacerId);
-                      }
-                    }}
-                    className="spacer-select"
-                    disabled={validSpacers.length === 0}
-                  >
-                    {validSpacers.map(spacer => (
-                      <option key={spacer.id} value={spacer.id}>
-                        {spacer.name} (OD: {spacer.spacerOD.toFixed(2)}")
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              <div className="control-group">
+                <label>Spacer Model:</label>
+                <select
+                  value={selectedCircleData?.selectedSpacer?.spacerId || ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (!value) {
+                      updateCircle(selectedCircleData.id, {
+                        autoSpacerEnabled: false,
+                        selectedSpacer: null,
+                        spacerOD: null
+                      });
+                      return;
+                    }
+
+                    const spacerId = parseInt(value, 10);
+                    if (selectSpacerById && spacerId) {
+                      selectSpacerById(spacerId);
+                    }
+                  }}
+                  className="spacer-select"
+                >
+                  <option value="">No spacer</option>
+                  {validSpacers.map(spacer => (
+                    <option key={spacer.id} value={spacer.id}>
+                      {spacer.name} (OD: {spacer.spacerOD.toFixed(2)}")
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               {/* Spacer Info Display */}
               {selectedCircleData?.selectedSpacer && (

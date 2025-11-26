@@ -60,27 +60,18 @@ export const useCircleDragging = (
     return (circle.spacerOD / 2) * PX_PER_INCH;
   };
 
-    /**
-     * Calculate the minimum allowed center-to-center distance between two circles.
-     *
-     * COLLISION RULES:
-     * - Carrier OD vs Carrier OD: CANNOT overlap
-     * - Bell OD vs Carrier OD: CANNOT overlap (in either direction!)
-     * - Spacer OD vs Carrier OD: CANNOT overlap (unless bypassBellSpacer is true)
-     * - Spacer vs Spacer: CAN overlap (staggered positioning)
-     * - Spacer vs Bell: CAN overlap
-     * - Bell vs Bell: CAN overlap
-     */
-/**
- * COLLISION RULES:
- * - Carrier OD vs Carrier OD: CANNOT overlap (ALWAYS enforced)
- * - Bell OD vs Carrier OD: CANNOT overlap (ALWAYS enforced)
- * - Spacer OD vs Carrier OD: CANNOT overlap (UNLESS bypassBellSpacer is true)
- * - Spacer vs Spacer: CAN overlap (staggered positioning)
- * - Spacer vs Bell: CAN overlap
- * - Bell vs Bell: CAN overlap
- */
-const getMinDistance = (movingCircle, otherCircle) => {
+  /**
+   * Calculate the minimum allowed center-to-center distance between two circles.
+   *
+   * COLLISION RULES:
+   * - Carrier OD vs Carrier OD: CANNOT overlap (always enforced)
+   * - Bell OD vs Carrier OD: CANNOT overlap (always enforced)
+   * - Spacer OD vs Carrier OD: protected, unless the MOVING circle has bypass enabled
+   * - Spacer vs Spacer: CAN overlap (staggered positioning)
+   * - Spacer vs Bell: CAN overlap
+   * - Bell vs Bell: CAN overlap
+   */
+  const getMinDistance = (movingCircle, otherCircle) => {
   const movingCarrier = getCarrierRadius(movingCircle);
   const movingBell = getBellRadius(movingCircle);
   const movingSpacerRadius = getSpacerRadius(movingCircle);
@@ -89,9 +80,8 @@ const getMinDistance = (movingCircle, otherCircle) => {
   const otherBell = getBellRadius(otherCircle);
   const otherSpacerRadius = getSpacerRadius(otherCircle);
 
-  // Check if either circle has bypass mode enabled (spacer-only)
+  // Bypass only applies to the moving circle entering another spacer's territory
   const movingBypasses = movingCircle.bypassBellSpacer === true;
-  const otherBypasses = otherCircle.bypassBellSpacer === true;
 
   // Start with carrier-to-carrier (ALWAYS applies - never bypass this)
   let minDist = movingCarrier + otherCarrier;
@@ -107,15 +97,13 @@ const getMinDistance = (movingCircle, otherCircle) => {
   }
 
   // === SPACER COLLISION RULES ===
-  // Moving circle's Spacer cannot intrude into other's Carrier
-  // SKIP if moving circle has bypass enabled
-  if (movingSpacerRadius > 0 && !movingBypasses) {
+  // Moving circle's Spacer always protects its own carrier
+  if (movingSpacerRadius > 0) {
     minDist = Math.max(minDist, movingSpacerRadius + otherCarrier);
   }
 
-  // Moving circle's Carrier cannot intrude into other's Spacer
-  // SKIP if other circle has bypass enabled
-  if (otherSpacerRadius > 0 && !otherBypasses) {
+  // Moving circle can opt to ignore other spacers when bypass is enabled
+  if (otherSpacerRadius > 0 && !movingBypasses) {
     minDist = Math.max(minDist, movingCarrier + otherSpacerRadius);
   }
 

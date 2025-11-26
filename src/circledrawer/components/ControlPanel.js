@@ -1,6 +1,6 @@
 /**
  * ControlPanel.js - Left sidebar UI controls
- * 
+ *
  * Enhanced with spacer selection controls from RACI logic.
  * Shows available spacers and allows manual selection or auto-mode.
  */
@@ -15,7 +15,7 @@ const ControlPanel = ({
   updateDiameter,
   updateBellOD,
   updateSpacerOD,
-  updateCircle, 
+  updateCircle,
   addCircle,
   deleteCircle,
   circles,
@@ -32,35 +32,28 @@ const ControlPanel = ({
   runnerHeight,
   setRunnerHeight,
   effectiveData,
-  // NEW: Spacer-related props
   toggleAutoSpacer,
   selectSpacerById,
   getValidSpacersForSelectedCircle,
   showBundleSpacerRunners,
   setShowBundleSpacerRunners,
-  // NEW: Bypass bell/spacer rules toggle
   updateBypassBellSpacer
 }) => {
+  const carrierCount = circles.filter((c) => c.type === CIRCLE_TYPES.CARRIER_OD).length;
 
-
-  // Count carrier OD circles
-  const carrierCount = circles.filter(c => c.type === CIRCLE_TYPES.CARRIER_OD).length;
-
-  // Get valid spacers for current selection
-  const validSpacers = selectedCircleData?.type === CIRCLE_TYPES.CARRIER_OD 
+  const validSpacers = selectedCircleData?.type === CIRCLE_TYPES.CARRIER_OD
     ? (getValidSpacersForSelectedCircle ? getValidSpacersForSelectedCircle() : [])
     : [];
 
   return (
     <div className="controls-panel">
-      {/* Circle Controls Section */}
       <div className="control-section">
         <h3>Circle Controls</h3>
-        
+
         <div className="control-group">
           <label>Circle Type:</label>
-          <select 
-            value={selectedType} 
+          <select
+            value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
             className="type-select"
           >
@@ -70,7 +63,7 @@ const ControlPanel = ({
             <option value={CIRCLE_TYPES.SPACER_OD}>Spacer OD</option>
           </select>
         </div>
-        
+
         <div className="control-group">
           <label>Diameter (inches):</label>
           <input
@@ -101,7 +94,6 @@ const ControlPanel = ({
           </div>
         </div>
 
-        {/* Bell OD controls - only show for Carrier OD */}
         {selectedCircleData && selectedCircleData.type === CIRCLE_TYPES.CARRIER_OD && (
           <>
             <div className="control-group">
@@ -128,13 +120,8 @@ const ControlPanel = ({
                 step="0.25"
                 className="diameter-slider"
               />
-              <div className="slider-labels">
-                <span>0"</span>
-                <span>100"</span>
-              </div>
             </div>
 
-            {/* Bypass Collision Rules Checkbox - only show for Carrier OD */}
             <div
               style={{
                 marginTop: '15px',
@@ -179,19 +166,14 @@ const ControlPanel = ({
                   marginBottom: '0'
                 }}
               >
-                When checked, this carrier can pass through bell ODs and spacers
-                (but NOT other carriers)
+                When checked, this carrier can enter other spacer territories
+                (bells and other carriers still block movement)
               </p>
             </div>
 
-            {/* Spacer Selection Section */}
             <div className="control-section spacer-section">
               <h4>Spacer Selection (RACI)</h4>
-              {/* ...existing spacer UI unchanged... */}
 
-              <h4>Spacer Selection (RACI)</h4>
-              
-              {/* Auto/Manual Toggle */}
               <div className="control-group">
                 <label className="checkbox-label">
                   <input
@@ -203,31 +185,37 @@ const ControlPanel = ({
                 </label>
               </div>
 
-              {/* Spacer Dropdown (when in manual mode or to override) */}
-              {validSpacers.length > 0 && (
-                <div className="control-group">
-                  <label>Spacer Model:</label>
-                  <select
-                    value={selectedCircleData?.selectedSpacer?.spacerId || ''}
-                    onChange={(e) => {
-                      const spacerId = parseInt(e.target.value, 10);
-                      if (selectSpacerById && spacerId) {
-                        selectSpacerById(spacerId);
-                      }
-                    }}
-                    className="spacer-select"
-                    disabled={validSpacers.length === 0}
-                  >
-                    {validSpacers.map(spacer => (
-                      <option key={spacer.id} value={spacer.id}>
-                        {spacer.name} (OD: {spacer.spacerOD.toFixed(2)}")
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              <div className="control-group">
+                <label>Spacer Model:</label>
+                <select
+                  value={selectedCircleData?.selectedSpacer?.spacerId || ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (!value) {
+                      updateCircle(selectedCircleData.id, {
+                        autoSpacerEnabled: false,
+                        selectedSpacer: null,
+                        spacerOD: null
+                      });
+                      return;
+                    }
 
-              {/* Spacer Info Display */}
+                    const spacerId = parseInt(value, 10);
+                    if (selectSpacerById && spacerId) {
+                      selectSpacerById(spacerId);
+                    }
+                  }}
+                  className="spacer-select"
+                >
+                  <option value="">No spacer</option>
+                  {validSpacers.map((spacer) => (
+                    <option key={spacer.id} value={spacer.id}>
+                      {spacer.name} (OD: {spacer.spacerOD.toFixed(2)}")
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {selectedCircleData?.selectedSpacer && (
                 <div className="spacer-info">
                   <div className="info-row">
@@ -245,10 +233,17 @@ const ControlPanel = ({
                   {selectedCircleData.selectedSpacer.bellClearance !== null && (
                     <div className="info-row">
                       <span className="info-label">Bell Clearance:</span>
-                      <span className="info-value" style={{
-                        color: selectedCircleData.selectedSpacer.bellClearance >= 0.6 ? '#16a34a' : 
-                               selectedCircleData.selectedSpacer.bellClearance >= 0.4 ? '#ca8a04' : '#dc2626'
-                      }}>
+                      <span
+                        className="info-value"
+                        style={{
+                          color:
+                            selectedCircleData.selectedSpacer.bellClearance >= 0.6
+                              ? '#16a34a'
+                              : selectedCircleData.selectedSpacer.bellClearance >= 0.4
+                                ? '#ca8a04'
+                                : '#dc2626'
+                        }}
+                      >
                         {selectedCircleData.selectedSpacer.bellClearance.toFixed(2)}"
                       </span>
                     </div>
@@ -256,15 +251,13 @@ const ControlPanel = ({
                 </div>
               )}
 
-              {/* No spacer available warning */}
               {validSpacers.length === 0 && selectedCircleData?.diameter > 0 && (
                 <div className="warning-message">
                   No spacers available for this carrier OD
-                  {selectedCircleData?.bellOD > 0 && " and bell OD combination"}
+                  {selectedCircleData?.bellOD > 0 && ' and bell OD combination'}
                 </div>
               )}
 
-              {/* Manual Spacer OD override */}
               {!selectedCircleData?.autoSpacerEnabled && (
                 <div className="control-group">
                   <label>Manual Spacer OD:</label>
@@ -294,7 +287,6 @@ const ControlPanel = ({
         </div>
       </div>
 
-      {/* View Controls Section */}
       <div className="control-section">
         <h3>View Controls</h3>
         <div className="button-group">
@@ -302,15 +294,12 @@ const ControlPanel = ({
           <button onClick={zoomOut}>Zoom Out</button>
           <button onClick={resetZoom}>Reset</button>
         </div>
-        <div className="zoom-level">
-          Zoom: {(zoom * 100).toFixed(0)}%
-        </div>
+        <div className="zoom-level">Zoom: {(zoom * 100).toFixed(0)}%</div>
       </div>
 
-      {/* Display Options */}
       <div className="control-section">
         <h3>Display Options</h3>
-        
+
         <div className="control-group">
           <label className="checkbox-label">
             <input
@@ -360,7 +349,6 @@ const ControlPanel = ({
         )}
       </div>
 
-      {/* Info Section */}
       <div className="control-section info-section">
         <h3>Info</h3>
         <div className="info-grid">
@@ -383,7 +371,6 @@ const ControlPanel = ({
         </div>
       </div>
 
-      {/* Selected Circle Details */}
       {selectedCircleData && (
         <div className="control-section selected-info">
           <h3>Selected: #{selectedCircleData.id}</h3>

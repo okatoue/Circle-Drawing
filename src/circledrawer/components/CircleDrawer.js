@@ -18,24 +18,25 @@ const CircleDrawer = () => {
   const [showBundleSpacer, setShowBundleSpacer] = useState(false);
   const [runnerHeight, setRunnerHeight] = useState(2);
 
-const {
-  circles,
-  setCircles,
-  selectedCircle,
-  setSelectedCircle,
-  selectedType,
-  setSelectedType,
-  selectedCircleData,
-  addCircle,
-  deleteCircle,
-  updateDiameter,
-  updateBellOD,
-  updateSpacerOD,
-  updateCircle,  // <-- ADD THIS LINE
-  toggleAutoSpacer,
-  selectSpacerById,
-  getValidSpacersForSelectedCircle
-} = useCircleManagement();
+  const {
+    circles,
+    setCircles,
+    selectedCircle,
+    setSelectedCircle,
+    selectedType,
+    setSelectedType,
+    selectedCircleData,
+    addCircle,
+    deleteCircle,
+    updateDiameter,
+    updateBellOD,
+    updateSpacerOD,
+    updateCircle,
+    toggleAutoSpacer,
+    selectSpacerById,
+    getValidSpacersForSelectedCircle,
+    updateBypassBellSpacer
+  } = useCircleManagement();
 
   const {
     zoom,
@@ -81,7 +82,6 @@ const {
     handleMouseUp
   } = useCircleDragging(circles, setCircles, selectedCircle, setSelectedCircle, zoom, panOffset, editingCircle);
 
-  // Command line hook
   const {
     isActive: commandLineActive,
     inputValue: commandInputValue,
@@ -93,21 +93,16 @@ const {
     cancelCommand
   } = useCommandLine();
 
-  // Effective diameter hook
   const effectiveData = useEffectiveDiameter(circles);
 
-  // Modified add circle handler
   const handleAddCircle = () => {
     if (selectedType === CIRCLE_TYPES.CARRIER_OD) {
-      // Start command line for Carrier OD
       startCommand('ADD_CARRIER');
     } else {
-      // For other types, add directly
       addCircle();
     }
   };
 
-  // Command line submit callback
   const handleCommandSubmit = (commandData) => {
     addCircle(commandData);
   };
@@ -125,7 +120,7 @@ const {
           updateDiameter={updateDiameter}
           updateBellOD={updateBellOD}
           updateSpacerOD={updateSpacerOD}
-          updateCircle={updateCircle} 
+          updateCircle={updateCircle}
           addCircle={handleAddCircle}
           deleteCircle={deleteCircle}
           circles={circles}
@@ -142,11 +137,14 @@ const {
           runnerHeight={runnerHeight}
           setRunnerHeight={setRunnerHeight}
           effectiveData={effectiveData}
-            toggleAutoSpacer={toggleAutoSpacer}
-  selectSpacerById={selectSpacerById}
-  getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
+          toggleAutoSpacer={toggleAutoSpacer}
+          selectSpacerById={selectSpacerById}
+          getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
+          updateBypassBellSpacer={updateBypassBellSpacer}
+          showBundleSpacerRunners={showBundleSpacerRunners}
+          setShowBundleSpacerRunners={setShowBundleSpacerRunners}
         />
-        
+
         <Canvas
           circles={circles}
           selectedCircle={selectedCircle}
@@ -187,13 +185,11 @@ const {
           showBundleSpacer={showBundleSpacer}
           runnerHeight={runnerHeight}
           showDebugDistances={showDebugDistances}
-            showBundleSpacerRunners={showBundleSpacerRunners}
-  setShowBundleSpacerRunners={setShowBundleSpacerRunners}
-
+          showBundleSpacerRunners={showBundleSpacerRunners}
+          setShowBundleSpacerRunners={setShowBundleSpacerRunners}
         />
       </div>
 
-      {/* Command Line Component */}
       <CommandLine
         isActive={commandLineActive}
         prompt={commandPrompt}

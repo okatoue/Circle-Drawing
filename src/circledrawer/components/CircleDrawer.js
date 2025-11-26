@@ -31,7 +31,7 @@ const CircleDrawer = () => {
     updateDiameter,
     updateBellOD,
     updateSpacerOD,
-    updateCircle,  // <-- ADD THIS LINE
+    updateCircle,
     toggleAutoSpacer,
     selectSpacerById,
     getValidSpacersForSelectedCircle,
@@ -82,7 +82,6 @@ const CircleDrawer = () => {
     handleMouseUp
   } = useCircleDragging(circles, setCircles, selectedCircle, setSelectedCircle, zoom, panOffset, editingCircle);
 
-  // Command line hook
   const {
     isActive: commandLineActive,
     inputValue: commandInputValue,
@@ -94,21 +93,16 @@ const CircleDrawer = () => {
     cancelCommand
   } = useCommandLine();
 
-  // Effective diameter hook
   const effectiveData = useEffectiveDiameter(circles);
 
-  // Modified add circle handler
   const handleAddCircle = () => {
     if (selectedType === CIRCLE_TYPES.CARRIER_OD) {
-      // Start command line for Carrier OD
       startCommand('ADD_CARRIER');
     } else {
-      // For other types, add directly
       addCircle();
     }
   };
 
-  // Command line submit callback
   const handleCommandSubmit = (commandData) => {
     addCircle(commandData);
   };
@@ -126,7 +120,7 @@ const CircleDrawer = () => {
           updateDiameter={updateDiameter}
           updateBellOD={updateBellOD}
           updateSpacerOD={updateSpacerOD}
-          updateCircle={updateCircle} 
+          updateCircle={updateCircle}
           addCircle={handleAddCircle}
           deleteCircle={deleteCircle}
           circles={circles}
@@ -147,8 +141,10 @@ const CircleDrawer = () => {
           selectSpacerById={selectSpacerById}
           getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
           updateBypassBellSpacer={updateBypassBellSpacer}
+          showBundleSpacerRunners={showBundleSpacerRunners}
+          setShowBundleSpacerRunners={setShowBundleSpacerRunners}
         />
-        
+
         <Canvas
           circles={circles}
           selectedCircle={selectedCircle}
@@ -188,14 +184,12 @@ const CircleDrawer = () => {
           showEffectiveDiameter={showEffectiveDiameter}
           showBundleSpacer={showBundleSpacer}
           runnerHeight={runnerHeight}
-            showDebugDistances={showDebugDistances}
-            showBundleSpacerRunners={showBundleSpacerRunners}
-            setShowBundleSpacerRunners={setShowBundleSpacerRunners}
-
-          />
+          showDebugDistances={showDebugDistances}
+          showBundleSpacerRunners={showBundleSpacerRunners}
+          setShowBundleSpacerRunners={setShowBundleSpacerRunners}
+        />
       </div>
 
-      {/* Command Line Component */}
       <CommandLine
         isActive={commandLineActive}
         prompt={commandPrompt}

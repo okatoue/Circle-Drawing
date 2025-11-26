@@ -14,39 +14,14 @@ export const useCircleDragging = (
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isSnapped, setIsSnapped] = useState(false);
 
-  // ============================================================
-  // CONFIGURATION
-  // ============================================================
-
-  // Tolerance for considering positions "valid" (pixels)
-  // Increase if circles feel too sticky, decrease if they overlap visually
   const EPSILON = 0.5;
-
-  // Max iterations for relaxation algorithm
-  // Increase if circles don't settle properly in complex arrangements
   const MAX_ITERATIONS = 20;
-
-  // Minimum push magnitude to continue iterating
-  // Helps detect convergence and prevents infinite loops
   const MIN_PUSH_THRESHOLD = 0.1;
-
-  // How aggressively we apply the computed push in each iteration.
-  // 1.0 = full push (more "springy"), 0.3–0.7 = softer / more stable.
   const RELAX_FACTOR = 0.7;
+  const MAX_STRETCH_FACTOR = 1.5;
+  const MAX_EXTRA_PIXELS = 2;
 
-  // Gating parameters to avoid "magnet repulsion"
-  // We don't allow the solver to move the circle opposite your drag,
-  // or to move *much* farther than the mouse actually moved.
-  const MAX_STRETCH_FACTOR = 1.5; // allowed candidate distance vs mouse distance
-  const MAX_EXTRA_PIXELS = 2;     // small constant cushion in pixels
-
-  // ============================================================
-  // RADIUS CALCULATIONS
-  // ============================================================
-
-  const getCarrierRadius = (circle) => {
-    return (circle.diameter / 2) * PX_PER_INCH;
-  };
+  const getCarrierRadius = (circle) => (circle.diameter / 2) * PX_PER_INCH;
 
   const getBellRadius = (circle) => {
     if (circle.type !== CIRCLE_TYPES.CARRIER_OD) return 0;
@@ -60,85 +35,40 @@ export const useCircleDragging = (
     return (circle.spacerOD / 2) * PX_PER_INCH;
   };
 
-    /**
-     * Calculate the minimum allowed center-to-center distance between two circles.
-     *
-     * COLLISION RULES:
-     * - Carrier OD vs Carrier OD: CANNOT overlap
-     * - Bell OD vs Carrier OD: CANNOT overlap (in either direction!)
-     * - Spacer OD vs Carrier OD: CANNOT overlap (unless bypassBellSpacer is true)
-     * - Spacer vs Spacer: CAN overlap (staggered positioning)
-     * - Spacer vs Bell: CAN overlap
-     * - Bell vs Bell: CAN overlap
-     */
-/**
- * COLLISION RULES:
- * - Carrier OD vs Carrier OD: CANNOT overlap (ALWAYS enforced)
- * - Bell OD vs Carrier OD: CANNOT overlap (ALWAYS enforced)
- * - Spacer OD vs Carrier OD: CANNOT overlap (UNLESS bypassBellSpacer is true)
- * - Spacer vs Spacer: CAN overlap (staggered positioning)
- * - Spacer vs Bell: CAN overlap
- * - Bell vs Bell: CAN overlap
- */
-const getMinDistance = (movingCircle, otherCircle) => {
-  const movingCarrier = getCarrierRadius(movingCircle);
-  const movingBell = getBellRadius(movingCircle);
-  const movingSpacerRadius = getSpacerRadius(movingCircle);
+  const getMinDistance = (movingCircle, otherCircle) => {
+    const movingCarrier = getCarrierRadius(movingCircle);
+    const movingBell = getBellRadius(movingCircle);
+    const movingSpacerRadius = getSpacerRadius(movingCircle);
 
-  const otherCarrier = getCarrierRadius(otherCircle);
-  const otherBell = getBellRadius(otherCircle);
-  const otherSpacerRadius = getSpacerRadius(otherCircle);
+    const otherCarrier = getCarrierRadius(otherCircle);
+    const otherBell = getBellRadius(otherCircle);
+    const otherSpacerRadius = getSpacerRadius(otherCircle);
 
-  // Check if either circle has bypass mode enabled (spacer-only)
-  const movingBypasses = movingCircle.bypassBellSpacer === true;
-  const otherBypasses = otherCircle.bypassBellSpacer === true;
+    const movingBypasses = movingCircle.bypassBellSpacer === true;
 
-  // Start with carrier-to-carrier (ALWAYS applies - never bypass this)
-  let minDist = movingCarrier + otherCarrier;
+    let minDist = movingCarrier + otherCarrier;
 
-  // === BELL COLLISION RULES ===
-  // Bell collisions are ALWAYS enforced (bypass does NOT apply)
-  if (movingBell > 0) {
-    minDist = Math.max(minDist, movingBell + otherCarrier);
-  }
+    if (movingBell > 0) {
+      minDist = Math.max(minDist, movingBell + otherCarrier);
+    }
 
-  if (otherBell > 0) {
-    minDist = Math.max(minDist, movingCarrier + otherBell);
-  }
+    if (otherBell > 0) {
+      minDist = Math.max(minDist, movingCarrier + otherBell);
+    }
 
-  // === SPACER COLLISION RULES ===
-  // Moving circle's Spacer cannot intrude into other's Carrier
-  // SKIP if moving circle has bypass enabled
-  if (movingSpacerRadius > 0 && !movingBypasses) {
-    minDist = Math.max(minDist, movingSpacerRadius + otherCarrier);
-  }
+    if (!movingBypasses) {
+      if (movingSpacerRadius > 0) {
+        minDist = Math.max(minDist, movingSpacerRadius + otherCarrier);
+      }
 
-  // Moving circle's Carrier cannot intrude into other's Spacer
-  // SKIP if other circle has bypass enabled
-  if (otherSpacerRadius > 0 && !otherBypasses) {
-    minDist = Math.max(minDist, movingCarrier + otherSpacerRadius);
-  }
+      if (otherSpacerRadius > 0) {
+        minDist = Math.max(minDist, movingCarrier + otherSpacerRadius);
+      }
+    }
 
-  // We intentionally do NOT check:
-  // - Bell vs Bell (can overlap)
-  // - Spacer vs Spacer (can overlap - staggered positioning)
-  // - Bell vs Spacer (can overlap)
+    return minDist;
+  };
 
-  return minDist;
-};
-
-  // ============================================================
-  // CORE COLLISION ALGORITHM: ITERATIVE POSITION RELAXATION
-  // ============================================================
-
-  /**
-   * Compute all overlaps at a given position and return the push-out vector.
-   *
-   * CHANGED:
-   * - Instead of summing raw penetration vectors (which can explode in magnitude),
-   *   we average the normals and scale by the *maximum* penetration.
-   * - This gives a single, "soft" push direction out of all overlaps at once.
-   */
   const computeOverlaps = (movingCircle, x, y) => {
     let pushX = 0;
     let pushY = 0;
@@ -154,7 +84,6 @@ const getMinDistance = (movingCircle, otherCircle) => {
       const dy = y - other.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      // Penetration depth (positive means overlapping)
       const penetration = minDist - dist;
 
       if (penetration > EPSILON) {
@@ -163,29 +92,25 @@ const getMinDistance = (movingCircle, otherCircle) => {
           maxPenetration = penetration;
         }
 
-        // Normal vector FROM other circle TO test position (escape direction)
-        let normalX, normalY;
+        let normalX;
+        let normalY;
         if (dist > 0.001) {
           normalX = dx / dist;
           normalY = dy / dist;
         } else {
-          // Circles are coincident - arbitrary direction
           normalX = 1;
           normalY = 0;
         }
 
-        // Accumulate normals weighted by penetration
         pushX += normalX * penetration;
         pushY += normalY * penetration;
       }
     }
 
     if (overlapCount > 0) {
-      // Average the normals
       pushX /= overlapCount;
       pushY /= overlapCount;
 
-      // Normalize and scale by max penetration
       const mag = Math.hypot(pushX, pushY);
       if (mag > 0.0001) {
         pushX = (pushX / mag) * maxPenetration;
@@ -199,23 +124,10 @@ const getMinDistance = (movingCircle, otherCircle) => {
     return { pushX, pushY, maxPenetration, overlapCount };
   };
 
-  /**
-   * MAIN COLLISION RESOLUTION FUNCTION
-   *
-   * Takes a target position and returns the nearest valid (non-overlapping) position.
-   * Uses iterative relaxation - each iteration pushes the position out of all overlaps.
-   *
-   * NEW BEHAVIOR:
-   * - Uses a softened, averaged push vector (less "explosive").
-   * - After resolving collisions, we **gate** the move:
-   *   - If the solver wants to move opposite to the mouse direction, we treat it as BLOCKED
-   *     and keep the circle where it was -> feels like a hard stop instead of repulsion.
-   */
   const getValidPosition = (movingCircle, currentX, currentY, targetX, targetY) => {
     let newX = targetX;
     let newY = targetY;
 
-    // Iteratively relax position until no overlaps or we stop making progress
     for (let iter = 0; iter < MAX_ITERATIONS; iter++) {
       const { pushX, pushY, maxPenetration, overlapCount } = computeOverlaps(
         movingCircle,
@@ -223,31 +135,23 @@ const getMinDistance = (movingCircle, otherCircle) => {
         newY
       );
 
-      // No overlaps (or tiny) -> we're good
       if (overlapCount === 0 || maxPenetration <= EPSILON) {
         break;
       }
 
       const pushMagnitude = Math.hypot(pushX, pushY);
       if (pushMagnitude < MIN_PUSH_THRESHOLD) {
-        // Push is too small to matter -> stop iterating
         break;
       }
 
-      // Apply softened push (relaxation)
       newX += pushX * RELAX_FACTOR;
       newY += pushY * RELAX_FACTOR;
     }
 
-    // Final validation: if still overlapping after all iterations, fall back to current position
     const finalCheck = computeOverlaps(movingCircle, newX, newY);
     if (finalCheck.maxPenetration > EPSILON * 2) {
       return { x: currentX, y: currentY };
     }
-
-    // ============================================================
-    // GATING: DON'T MOVE "AGAINST" THE MOUSE OR TELEPORT
-    // ============================================================
 
     const moveToTargetX = targetX - currentX;
     const moveToTargetY = targetY - currentY;
@@ -257,33 +161,22 @@ const getMinDistance = (movingCircle, otherCircle) => {
     const lenToTarget = Math.hypot(moveToTargetX, moveToTargetY);
     const lenToCandidate = Math.hypot(moveToCandidateX, moveToCandidateY);
 
-    // If mouse hasn't really moved, don't move the circle
     if (lenToTarget < 1e-6) {
       return { x: currentX, y: currentY };
     }
 
-    // Dot product tells us if candidate is roughly in the same direction as the drag
-    const dot =
-      moveToTargetX * moveToCandidateX + moveToTargetY * moveToCandidateY;
+    const dot = moveToTargetX * moveToCandidateX + moveToTargetY * moveToCandidateY;
 
-    // If dot <= 0, the solver wants to move opposite your drag -> feel like "repulsion".
-    // Instead, we treat that as "blocked" and keep the circle where it was.
     if (dot <= 0) {
       return { x: currentX, y: currentY };
     }
 
-    // Also clamp how far the solver is allowed to move compared to the mouse.
-    // This prevents big teleports when deeply intersecting a cluster.
     if (lenToCandidate > lenToTarget * MAX_STRETCH_FACTOR + MAX_EXTRA_PIXELS) {
       return { x: currentX, y: currentY };
     }
 
     return { x: newX, y: newY };
   };
-
-  // ============================================================
-  // MOUSE EVENT HANDLERS
-  // ============================================================
 
   const handleMouseDown = (e, circleId) => {
     if (editingCircle) return;
@@ -320,20 +213,17 @@ const getMinDistance = (movingCircle, otherCircle) => {
     const movingCircle = circles.find((c) => c.id === selectedCircle);
     if (!movingCircle) return;
 
-    // Where the mouse wants the circle to be
     const targetX = svgP.x - dragStart.x;
     const targetY = svgP.y - dragStart.y;
 
-    // Find valid position using iterative relaxation + gating
     const validPos = getValidPosition(
       movingCircle,
-      movingCircle.x, // current position (fallback)
+      movingCircle.x,
       movingCircle.y,
-      targetX, // target position (where mouse is)
+      targetX,
       targetY
     );
 
-    // Update circle position
     setCircles(
       circles.map((circle) =>
         circle.id === selectedCircle
@@ -353,6 +243,6 @@ const getMinDistance = (movingCircle, otherCircle) => {
     isSnapped,
     handleMouseDown,
     handleMouseMove,
-    handleMouseUp,
+    handleMouseUp
   };
 };

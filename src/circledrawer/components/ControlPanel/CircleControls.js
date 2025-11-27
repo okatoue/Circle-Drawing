@@ -2,6 +2,7 @@ import React from 'react';
 import { CIRCLE_TYPES, CIRCLE_DEFAULTS } from '../CircleTypes';
 import DiameterInput from './DiameterInput';
 import BellODControls from './BellODControls';
+import CasingControls from './CasingControls';
 
 const CircleControls = ({
   selectedType,
@@ -11,11 +12,13 @@ const CircleControls = ({
   updateBellOD,
   updateBypassBellSpacer,
   updateExcludeFromEffectiveOD,
+  updateWallThickness,
   addCircle,
   deleteCircle,
   circles
 }) => {
   const isCarrierOD = selectedCircleData?.type === CIRCLE_TYPES.CARRIER_OD;
+const isCasing = selectedCircleData?.type === CIRCLE_TYPES.CASING;
 
   return (
     <div className="control-section">
@@ -23,16 +26,14 @@ const CircleControls = ({
       
       <div className="control-group">
         <label>Circle Type:</label>
-        <select
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-          className="type-select"
-        >
-          <option value={CIRCLE_TYPES.CARRIER_OD}>Carrier OD</option>
-          <option value={CIRCLE_TYPES.CASING}>Casing</option>
-          <option value={CIRCLE_TYPES.BELL_OD}>Bell OD</option>
-          <option value={CIRCLE_TYPES.SPACER_OD}>Spacer OD</option>
-        </select>
+<select
+  value={selectedType}
+  onChange={(e) => setSelectedType(e.target.value)}
+  className="type-select"
+>
+  <option value={CIRCLE_TYPES.CARRIER_OD}>Carrier OD</option>
+  <option value={CIRCLE_TYPES.CASING}>Casing</option>
+</select>
       </div>
       
       <DiameterInput
@@ -51,7 +52,12 @@ const CircleControls = ({
           updateExcludeFromEffectiveOD={updateExcludeFromEffectiveOD}
         />
       )}
-
+{isCasing && (
+  <CasingControls
+    selectedCircleData={selectedCircleData}
+    updateWallThickness={updateWallThickness}
+  />
+)}
       <div className="button-group">
         <button onClick={() => addCircle()} className="add-btn">
           Add Circle

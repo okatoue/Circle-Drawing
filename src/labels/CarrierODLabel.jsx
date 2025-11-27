@@ -1,16 +1,18 @@
 import React from 'react';
-import Label from './Label';
+import EditableLabel from './EditableLabel';
 
-const CarrierODLabel = ({ id, position, targetPosition, onPositionChange, value }) => {
+const CarrierODLabel = ({ id, position, targetPosition, onPositionChange, onValueChange, value }) => {
   return (
-    <Label
+    <EditableLabel
       id={id}
       text={`Carrier OD: ${value}"`}
       position={position}
       targetPosition={targetPosition}
       onPositionChange={onPositionChange}
-      color="#4ECDC4"
+      onValueChange={onValueChange}
+      color="#3b82f6"
       fontSize={13}
+      value={value}
     />
   );
 };

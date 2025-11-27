@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import "./CircleDrawer.css";
 import "./CommandLine.css";
 import ControlPanel from "./ControlPanel";
@@ -13,14 +13,8 @@ import { useCommandLine } from "../hooks/useCommandLine";
 import { useEffectiveDiameter } from "../hooks/useEffectiveDiameter";
 import { CIRCLE_TYPES } from "./CircleTypes";
 
-const CircleDrawer = ({
-  addLabel,
-  updateLabelPosition,
-  updateLabelValue,
-  updateLabelTarget,
-  removeLabel,
-  clearLabels,
-}) => {
+const CircleDrawer = ({ addLabel, updateLabelPosition, updateLabelValue, updateLabelTarget, removeLabel, clearLabels, onReady }) => {
+
   const [showEffectiveDiameter, setShowEffectiveDiameter] = useState(true);
   const [showDebugDistances, setShowDebugDistances] = useState(false);
   const [showBundleSpacer, setShowBundleSpacer] = useState(false);
@@ -37,6 +31,7 @@ const CircleDrawer = ({
     addCircle,
     deleteCircle,
     updateDiameter,
+    updateWallThickness,
     updateBellOD,
     updateSpacerOD,
     updateCircle,
@@ -122,6 +117,16 @@ const CircleDrawer = ({
 
   const effectiveData = useEffectiveDiameter(circles);
 
+  // Expose circle update functions to parent
+useEffect(() => {
+  if (onReady) {
+    onReady({
+      updateDiameter,
+      updateBellOD
+    });
+  }
+}, [onReady, updateDiameter, updateBellOD]);
+
   const handleAddCircle = () => {
     if (selectedType === CIRCLE_TYPES.CARRIER_OD) {
       startCommand("ADD_CARRIER");
@@ -151,6 +156,7 @@ const CircleDrawer = ({
           updateDiameter={updateDiameter}
           updateBellOD={updateBellOD}
           updateSpacerOD={updateSpacerOD}
+          updateWallThickness={updateWallThickness}
           updateCircle={updateCircle}
           addCircle={handleAddCircle}
           deleteCircle={deleteCircle}
@@ -231,8 +237,7 @@ clearLabels={clearLabels}
           updateLabelValue={updateLabelValue}
           updateLabelTarget={updateLabelTarget}
           removeLabel={removeLabel}
-
-        />
+       />
       </div>
 
       <CommandLine

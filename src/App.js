@@ -15,6 +15,9 @@ function App() {
     clearLabels 
   } = useLabelManagement();
 
+  const [circleUpdateFunctions, setCircleUpdateFunctions] = React.useState(null);
+
+
   return (
     <div className="App" style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <header className="App-header">
@@ -22,21 +25,22 @@ function App() {
         <p>Draw circles with adjustable diameters</p>
       </header>
       
-      <CircleDrawer 
-        addLabel={addLabel}
-        updateLabelPosition={updateLabelPosition}
-        updateLabelValue={updateLabelValue}
-        updateLabelTarget={updateLabelTarget}
-        removeLabel={removeLabel}
-          clearLabels={clearLabels}
-
-      />
+<CircleDrawer 
+  addLabel={addLabel}
+  updateLabelPosition={updateLabelPosition}
+  updateLabelValue={updateLabelValue}
+  updateLabelTarget={updateLabelTarget}
+  removeLabel={removeLabel}
+  clearLabels={clearLabels}
+  onReady={setCircleUpdateFunctions}
+/>
       
       {/* Labels - rendered last so they're on top */}
-      <LabelRenderer 
-        labels={labels} 
-        onPositionChange={updateLabelPosition} 
-      />
+<LabelRenderer 
+  labels={labels} 
+  onPositionChange={updateLabelPosition}
+  circleUpdateFunctions={circleUpdateFunctions}
+/>
     </div>
   );
 }

@@ -38,6 +38,7 @@ const CarrierODView = ({
   showRunners = true,
   addLabel,
   updateLabelPosition,
+  updateLabelValue,
   updateLabelTarget,
   panOffset,
   removeLabel
@@ -46,15 +47,15 @@ const CarrierODView = ({
   const bellRadiusInPixels = circle.bellOD ? (circle.bellOD * PX_PER_INCH) / 2 : 0;
   const spacerRadiusInPixels = circle.spacerOD ? (circle.spacerOD * PX_PER_INCH) / 2 : 0;
 
-  // Manage labels
-  useCarrierODLabels({
-    circle,
-    zoom,
-    panOffset,
-    addLabel,
-    updateLabelTarget,
-    removeLabel
-  });
+useCarrierODLabels({
+  circle,
+  zoom,
+  panOffset,
+  addLabel,
+  updateLabelTarget,
+  updateLabelValue,
+  removeLabel
+});
 
   // Calculate runner data
   const runnerData = useRunnerData(circle);

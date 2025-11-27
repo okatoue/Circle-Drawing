@@ -3,15 +3,17 @@ import { useState, useCallback } from 'react';
 const useLabelManagement = () => {
   const [labels, setLabels] = useState([]);
 
-  const addLabel = useCallback((type, data) => {
-    const newLabel = {
-      id: `${type}-${Date.now()}`,
-      type,
-      position: data.position || { x: 100, y: 100 },
-      targetPosition: data.targetPosition || null,
-      value: data.value || '',
-      visible: true
-    };
+const addLabel = useCallback((type, data) => {
+  const newLabel = {
+    id: `${type}-${Date.now()}`,
+    type,
+    position: data.position || { x: 100, y: 100 },
+    targetPosition: data.targetPosition || null,
+    value: data.value || '',
+    visible: true,
+    circleId: data.circleId || null,
+    labelType: data.labelType || null
+  };
     
     setLabels(prev => [...prev, newLabel]);
     return newLabel.id;

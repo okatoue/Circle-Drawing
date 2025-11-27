@@ -39,6 +39,12 @@ export const useCircleDragging = (circles, setCircles, selectedCircle, setSelect
     for (const otherCircle of circles) {
       if (otherCircle.id === movingCircle.id) continue;
       
+      // Skip collision checks if moving circle is casing (casing bypasses all restrictions)
+if (movingCircle.type === CIRCLE_TYPES.CASING) continue;
+
+// Skip collision checks with casing circles (casing doesn't block other circles)
+if (otherCircle.type === CIRCLE_TYPES.CASING) continue;
+
       const otherCarrierRadius = getCarrierRadius(otherCircle);
       
       // Calculate distance from new position to other circle

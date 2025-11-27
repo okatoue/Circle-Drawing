@@ -12,6 +12,7 @@ export const useCarrierODLabels = ({
   panOffset,
   addLabel,
   updateLabelTarget,
+  updateLabelValue,
   removeLabel
 }) => {
   const labelIdsRef = useRef({
@@ -35,11 +36,13 @@ export const useCarrierODLabels = ({
     // Create Carrier OD label if visibility is enabled
     if (circle.labelVisibility?.carrier && !labelIdsRef.current.carrier) {
       const labelPos = svgToScreen(circle.x - 120, circle.y - radiusInPixels - 60, zoom, panOffset);
-      labelIdsRef.current.carrier = addLabel('carrierOD', {
-        position: labelPos,
-        targetPosition: centerScreen,
-        value: circle.diameter.toFixed(3)
-      });
+labelIdsRef.current.carrier = addLabel('carrierOD', {
+  position: labelPos,
+  targetPosition: centerScreen,
+  value: circle.diameter.toFixed(3),
+  circleId: circle.id,
+  labelType: 'carrier'
+});
     } else if (!circle.labelVisibility?.carrier && labelIdsRef.current.carrier) {
       // Remove label if visibility is disabled
       removeLabel(labelIdsRef.current.carrier);
@@ -50,11 +53,13 @@ export const useCarrierODLabels = ({
     if (circle.bellOD && circle.bellOD > circle.diameter && circle.labelVisibility?.bell && !labelIdsRef.current.bell) {
       const bellEdgeScreen = svgToScreen(circle.x + bellRadiusInPixels, circle.y, zoom, panOffset);
       const labelPos = svgToScreen(circle.x + 100, circle.y - bellRadiusInPixels - 60, zoom, panOffset);
-      labelIdsRef.current.bell = addLabel('bellOD', {
-        position: labelPos,
-        targetPosition: bellEdgeScreen,
-        value: circle.bellOD.toFixed(3)
-      });
+labelIdsRef.current.bell = addLabel('bellOD', {
+  position: labelPos,
+  targetPosition: bellEdgeScreen,
+  value: circle.bellOD.toFixed(3),
+  circleId: circle.id,
+  labelType: 'bell'
+});
     } else if ((!circle.labelVisibility?.bell || !circle.bellOD) && labelIdsRef.current.bell) {
       // Remove label if visibility is disabled or bell is removed
       removeLabel(labelIdsRef.current.bell);
@@ -75,15 +80,20 @@ export const useCarrierODLabels = ({
       removeLabel(labelIdsRef.current.spacer);
       labelIdsRef.current.spacer = null;
     }
-
-    // Create Spacer Config label if spacer configuration exists and visibility is enabled
+// Create Spacer Config label if spacer configuration exists and visibility is enabled
     if (circle.selectedSpacer?.spacerName && circle.labelVisibility?.spacerConfig && !labelIdsRef.current.spacerConfig) {
       const spacerEdgeScreen = svgToScreen(circle.x, circle.y + spacerRadiusInPixels, zoom, panOffset);
       const labelPos = svgToScreen(circle.x + 100, circle.y + spacerRadiusInPixels + 40, zoom, panOffset);
+      
+      // Format configuration as "4 X F41 + 2 X G41"
+      const configBreakdown = circle.selectedSpacer.configuration
+        ? circle.selectedSpacer.configuration.map(c => `${c.quantity} X ${c.type}`).join(' + ')
+        : circle.selectedSpacer.spacerName;
+      
       labelIdsRef.current.spacerConfig = addLabel('spacerConfig', {
         position: labelPos,
         targetPosition: spacerEdgeScreen,
-        value: circle.selectedSpacer.spacerName
+        value: configBreakdown
       });
     } else if ((!circle.labelVisibility?.spacerConfig || !circle.selectedSpacer) && labelIdsRef.current.spacerConfig) {
       // Remove label if visibility is disabled or spacer config is removed
@@ -139,5 +149,32 @@ export const useCarrierODLabels = ({
     }
   }, [circle.x, circle.y, circle.diameter, circle.bellOD, circle.spacerOD, zoom, panOffset, updateLabelTarget]);
 
+  // Update label VALUES when circle data changes
+  useEffect(() => {
+    if (!updateLabelValue) return;
+
+    // Update Carrier OD label value
+    if (labelIdsRef.current.carrier) {
+      updateLabelValue(labelIdsRef.current.carrier, circle.diameter.toFixed(3));
+    }
+
+    // Update Bell OD label value
+    if (labelIdsRef.current.bell && circle.bellOD) {
+      updateLabelValue(labelIdsRef.current.bell, circle.bellOD.toFixed(3));
+    }
+
+    // Update Spacer OD label value
+    if (labelIdsRef.current.spacer && circle.spacerOD) {
+      updateLabelValue(labelIdsRef.current.spacer, circle.spacerOD.toFixed(3));
+    }
+
+    // Update Spacer Config label value
+    if (labelIdsRef.current.spacerConfig && circle.selectedSpacer) {
+      const configBreakdown = circle.selectedSpacer.configuration
+        ? circle.selectedSpacer.configuration.map(c => `${c.quantity} X ${c.type}`).join(' + ')
+        : circle.selectedSpacer.spacerName;
+      updateLabelValue(labelIdsRef.current.spacerConfig, configBreakdown);
+    }
+  }, [circle.diameter, circle.bellOD, circle.spacerOD, circle.selectedSpacer, updateLabelValue]);
   return null; // This hook only manages side effects
 };

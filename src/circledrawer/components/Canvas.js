@@ -1,5 +1,6 @@
 import React from 'react';
 import CarrierOD from './carrierOD';
+import Casing from './casing';
 import EffectiveDiameter from './effectiveDiameter';
 import { BundleSpacer, BundleSpacerRunners } from './bundleSpacers';
 import DebugDistances from './DebugDistances';
@@ -49,6 +50,7 @@ const Canvas = ({
   updateLabelPosition,
   updateLabelTarget,
   removeLabel,
+  updateLabelValue,
 }) => {
   return (
     <div className="canvas-container">
@@ -111,43 +113,59 @@ const Canvas = ({
             />
           )}
           
-          {/* Render all circles */}
-          {circles.map((circle) => (
-            <CarrierOD
-              key={circle.id}
-              circle={circle}
-              isSelected={circle.id === selectedCircle}
-              zoom={zoom}
-              editingCircle={editingCircle}
-              editingBellOD={editingBellOD}
-              editingSpacerOD={editingSpacerOD}
-              editValue={editValue}
-              bellEditValue={bellEditValue}
-              spacerEditValue={spacerEditValue}
-              inputRef={inputRef}
-              bellInputRef={bellInputRef}
-              spacerInputRef={spacerInputRef}
-              onMouseDown={handleMouseDown}
-              onDoubleClick={handleDoubleClick}
-              onBellDoubleClick={handleBellDoubleClick}
-              onSpacerDoubleClick={handleSpacerDoubleClick}
-              onEditChange={handleEditChange}
-              onBellEditChange={handleBellEditChange}
-              onSpacerEditChange={handleSpacerEditChange}
-              onEditKeyPress={handleEditKeyPress}
-              onBellEditKeyPress={handleBellEditKeyPress}
-              onSpacerEditKeyPress={handleSpacerEditKeyPress}
-              onEditBlur={saveEdit}
-              onBellEditBlur={saveBellEdit}
-              onSpacerEditBlur={saveSpacerEdit}
-              isDragging={isDragging}
-              addLabel={addLabel}
-              updateLabelPosition={updateLabelPosition}
-              updateLabelTarget={updateLabelTarget}
-              removeLabel={removeLabel}
-              panOffset={panOffset}
-            />
-          ))}
+        {/* Render casings FIRST (so they're behind everything) */}
+{circles.filter(c => c.type === 'CASING').map((circle) => (
+  <Casing
+    key={circle.id}
+    circle={circle}
+    isSelected={circle.id === selectedCircle}
+    zoom={zoom}
+    onMouseDown={handleMouseDown}
+    isDragging={isDragging}
+    addLabel={addLabel}
+    updateLabelTarget={updateLabelTarget}
+    removeLabel={removeLabel}
+    panOffset={panOffset}
+  />
+))}
+
+{/* Render all non-casing circles */}
+{circles.filter(c => c.type !== 'CASING').map((circle) => (
+  <CarrierOD
+    key={circle.id}
+    circle={circle}
+    isSelected={circle.id === selectedCircle}
+    zoom={zoom}
+    editingCircle={editingCircle}
+    editingBellOD={editingBellOD}
+    editingSpacerOD={editingSpacerOD}
+    editValue={editValue}
+    bellEditValue={bellEditValue}
+    spacerEditValue={spacerEditValue}
+    inputRef={inputRef}
+    bellInputRef={bellInputRef}
+    spacerInputRef={spacerInputRef}
+    onMouseDown={handleMouseDown}
+    onDoubleClick={handleDoubleClick}
+    onBellDoubleClick={handleBellDoubleClick}
+    onSpacerDoubleClick={handleSpacerDoubleClick}
+    onEditChange={handleEditChange}
+    onBellEditChange={handleBellEditChange}
+    onSpacerEditChange={handleSpacerEditChange}
+    onEditKeyPress={handleEditKeyPress}
+    onBellEditKeyPress={handleBellEditKeyPress}
+    onSpacerEditKeyPress={handleSpacerEditKeyPress}
+    onEditBlur={saveEdit}
+    onBellEditBlur={saveBellEdit}
+    onSpacerEditBlur={saveSpacerEdit}
+    isDragging={isDragging}
+    addLabel={addLabel}
+    updateLabelPosition={updateLabelPosition}
+    updateLabelTarget={updateLabelTarget}
+    removeLabel={removeLabel}
+    panOffset={panOffset}
+  />
+))}
           
           {/* Debug overlay - shows distances between circles */}
           {showDebugDistances && (

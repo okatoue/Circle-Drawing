@@ -42,18 +42,12 @@ const getConfigurationForSpacer = (spacerId, carrierOD) => {
 
 export const useCircleManagement = () => {
   const [circles, setCircles] = useState(() => {
-    // Create initial circle with auto-spacer selection
+    // Create initial circle with NO spacer by default
     const initialCircle = createCircle(1, 300, 300, CIRCLE_TYPES.CARRIER_OD);
-    const spacerResult = selectSpacerForPipe({
-      carrierOD: initialCircle.diameter,
-      bellOD: initialCircle.bellOD || 0
-    });
-    
-    if (spacerResult) {
-      initialCircle.selectedSpacer = spacerResult;
-      initialCircle.spacerOD = spacerResult.spacerOuterDiameter;
-      initialCircle.autoSpacerEnabled = true;
-    }
+    // Disable auto-spacer and set no spacer selected
+    initialCircle.autoSpacerEnabled = false;
+    initialCircle.selectedSpacer = null;
+    initialCircle.spacerOD = null;
     
     return [initialCircle];
   });
@@ -108,14 +102,12 @@ export const useCircleManagement = () => {
     }
     
     // Create the circle
-    const newCircle = createCircle(
-      newId, 
-      200 + Math.random() * 200, 
-      200 + Math.random() * 200, 
-      selectedType, 
-      bellOD,
-      spacerOD
-    );
+const newCircle = createCircle(newId, 300, 300, selectedType);
+
+// Add wall thickness for casing
+if (selectedType === CIRCLE_TYPES.CASING) {
+  newCircle.wallThickness = 0.5;
+}
     
     // Override the diameter if provided
     if (commandData && commandData.carrierDiameter) {
@@ -241,6 +233,15 @@ export const useCircleManagement = () => {
       };
     }));
   }, [selectedCircle]);
+
+  const updateWallThickness = useCallback((newWallThickness) => {
+  setCircles(prevCircles => prevCircles.map(circle => {
+    if (circle.id !== selectedCircle) return circle;
+    if (circle.type !== CIRCLE_TYPES.CASING) return circle;
+    
+    return { ...circle, wallThickness: Math.max(0.1, newWallThickness) };
+  }));
+}, [selectedCircle]);
 
   const updateCircle = useCallback((circleId, updates) => {
   setCircles(prevCircles => prevCircles.map(circle => {
@@ -391,6 +392,7 @@ return {
     updateDiameter,
     updateBellOD,
     updateSpacerOD,
+    updateWallThickness,
 updateCircle,
     toggleAutoSpacer,
     selectSpacerById,

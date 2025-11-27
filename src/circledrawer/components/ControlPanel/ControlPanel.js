@@ -13,6 +13,7 @@ const ControlPanel = ({
   updateDiameter,
   updateBellOD,
   updateSpacerOD,
+   updateWallThickness,
   updateCircle,
   addCircle,
   deleteCircle,
@@ -58,6 +59,7 @@ cancelPlacement
         selectedCircleData={selectedCircleData}
         updateDiameter={updateDiameter}
         updateBellOD={updateBellOD}
+         updateWallThickness={updateWallThickness}
         updateBypassBellSpacer={updateBypassBellSpacer}
         updateExcludeFromEffectiveOD={updateExcludeFromEffectiveOD}
         addCircle={addCircle}

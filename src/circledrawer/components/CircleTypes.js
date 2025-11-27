@@ -96,7 +96,9 @@ export const createCircle = (
     // NEW: Flag for auto vs manual spacer selection
     autoSpacerEnabled: autoSelectSpacer && type === CIRCLE_TYPES.CARRIER_OD,
     // NEW: When true, this carrier ignores bell/spacer collision
-    bypassBellSpacer: false
+    bypassBellSpacer: false,
+    // NEW: When true, exclude this circle from effective OD calculation
+    excludeFromEffectiveOD: false
   };
   
   // Auto-select spacer if enabled and this is a carrier

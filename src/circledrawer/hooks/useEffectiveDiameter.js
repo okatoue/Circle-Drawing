@@ -4,8 +4,9 @@ import { CIRCLE_TYPES, PX_PER_INCH } from '../components/CircleTypes';
 export const useEffectiveDiameter = (circles) => {
   const effectiveData = useMemo(() => {
     // Filter ONLY Carrier OD circles (ignore Bell OD and Spacer OD)
-    const carrierCircles = circles.filter(c => c.type === CIRCLE_TYPES.CARRIER_OD);
-    
+   const carrierCircles = circles.filter(c => 
+      c.type === CIRCLE_TYPES.CARRIER_OD && !c.excludeFromEffectiveOD
+    );    
     if (carrierCircles.length === 0) {
       return null;
     }

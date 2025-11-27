@@ -45,8 +45,7 @@ export const useCircleDragging = (circles, setCircles, selectedCircle, setSelect
       const dx = newX - otherCircle.x;
       const dy = newY - otherCircle.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-
-      // Check 1: Carrier-to-Carrier collision
+// Check 1: Carrier-to-Carrier collision (ALWAYS enforced)
       const carrierMinDistance = movingCarrierRadius + otherCarrierRadius + 0.5;
       if (distance < carrierMinDistance) {
         const angle = Math.atan2(dy, dx);
@@ -56,7 +55,7 @@ export const useCircleDragging = (circles, setCircles, selectedCircle, setSelect
         break;
       }
 
-      // Check 2: Bell OD cannot intrude into other Carrier OD
+      // Check 2: Bell OD cannot intrude into other Carrier OD (ALWAYS enforced)
       if (movingBellRadius > 0) {
         const bellMinDistance = movingBellRadius + otherCarrierRadius + 0.5;
         if (distance < bellMinDistance) {
@@ -68,14 +67,26 @@ export const useCircleDragging = (circles, setCircles, selectedCircle, setSelect
         }
       }
 
-      // Check 3: Spacer cannot intrude into other Carrier OD
-      // (Spacers ignore Bell OD and can overlap other Spacers)
-      if (movingSpacerRadius > 0) {
+      // Check 3: Spacer collision - ONLY if moving circle does NOT have bypass enabled
+      if (movingSpacerRadius > 0 && !movingCircle.bypassBellSpacer) {
         const spacerToCarrierDistance = movingSpacerRadius + otherCarrierRadius + 0.5;
         if (distance < spacerToCarrierDistance) {
           const angle = Math.atan2(dy, dx);
           validX = otherCircle.x + Math.cos(angle) * spacerToCarrierDistance;
           validY = otherCircle.y + Math.sin(angle) * spacerToCarrierDistance;
+          collisionDetected = true;
+          break;
+        }
+      }
+      
+      // Check 4: Other circles' spacers block moving circle (unless moving circle has bypass)
+      const otherSpacerRadius = getSpacerRadius(otherCircle);
+      if (otherSpacerRadius > 0 && !movingCircle.bypassBellSpacer) {
+        const otherSpacerToMovingCarrier = otherSpacerRadius + movingCarrierRadius + 0.5;
+        if (distance < otherSpacerToMovingCarrier) {
+          const angle = Math.atan2(dy, dx);
+          validX = otherCircle.x + Math.cos(angle) * otherSpacerToMovingCarrier;
+          validY = otherCircle.y + Math.sin(angle) * otherSpacerToMovingCarrier;
           collisionDetected = true;
           break;
         }

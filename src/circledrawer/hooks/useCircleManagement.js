@@ -249,6 +249,21 @@ export const useCircleManagement = () => {
   }));
 }, []);
 
+/**
+   * Toggle exclude from effective OD for the selected carrier
+   */
+  const updateExcludeFromEffectiveOD = useCallback((enabled) => {
+    setCircles(prevCircles => prevCircles.map(circle => {
+      if (circle.id !== selectedCircle) return circle;
+      if (circle.type !== CIRCLE_TYPES.CARRIER_OD) return circle;
+
+      return {
+        ...circle,
+        excludeFromEffectiveOD: enabled
+      };
+    }));
+  }, [selectedCircle]);
+
   /**
    * Toggle bypass flag for bell/spacer collision rules on the selected carrier
    */
@@ -345,7 +360,7 @@ export const useCircleManagement = () => {
   // Get currently selected circle data
   const selectedCircleData = circles.find(c => c.id === selectedCircle);
 
-  return {
+return {
     circles,
     setCircles,
     selectedCircle,
@@ -363,6 +378,7 @@ updateCircle,
     selectSpacerById,
     getValidSpacersForSelectedCircle,
     updateCircleSpacer,
-    updateBypassBellSpacer
+    updateBypassBellSpacer,
+    updateExcludeFromEffectiveOD
   };
 };

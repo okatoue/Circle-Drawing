@@ -36,7 +36,8 @@
     toggleAutoSpacer,
     selectSpacerById,
     getValidSpacersForSelectedCircle,
-    updateBypassBellSpacer
+    updateBypassBellSpacer,
+    updateExcludeFromEffectiveOD
   } = useCircleManagement();
  
    const {
@@ -144,6 +145,8 @@
           getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
           updateBypassBellSpacer={updateBypassBellSpacer}
           showBundleSpacerRunners={showBundleSpacerRunners}
+                    updateExcludeFromEffectiveOD={updateExcludeFromEffectiveOD}
+
           setShowBundleSpacerRunners={setShowBundleSpacerRunners}
          />
 

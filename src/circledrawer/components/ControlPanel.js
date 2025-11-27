@@ -30,7 +30,9 @@
    getValidSpacersForSelectedCircle,
    showBundleSpacerRunners,
    setShowBundleSpacerRunners,
-   updateBypassBellSpacer
+   updateBypassBellSpacer,
+       updateExcludeFromEffectiveOD
+
  }) => {
   const carrierCount = circles.filter((c) => c.type === CIRCLE_TYPES.CARRIER_OD).length;
   const validSpacers = selectedCircleData?.type === CIRCLE_TYPES.CARRIER_OD
@@ -164,7 +166,42 @@
                 (bells and other carriers still block movement)
                </p>
              </div>
- 
+ <div className="control-group" style={{ marginTop: '10px' }}>
+               <label
+                 style={{
+                   display: 'flex',
+                   alignItems: 'center',
+                   gap: '8px',
+                   cursor: 'pointer',
+                   color: '#e2e8f0',
+                   fontWeight: '500'
+                 }}
+               >
+                 <input
+                   type="checkbox"
+                   checked={selectedCircleData?.excludeFromEffectiveOD || false}
+                   onChange={(e) => updateExcludeFromEffectiveOD && updateExcludeFromEffectiveOD(e.target.checked)}
+                   style={{
+                     width: '18px',
+                     height: '18px',
+                     cursor: 'pointer'
+                   }}
+                 />
+                 <span style={{ fontSize: '14px' }}>
+                   Exclude from Effective OD
+                 </span>
+               </label>
+               <p
+                 style={{
+                   fontSize: '11px',
+                   color: '#888',
+                   marginTop: '5px',
+                   marginBottom: '0'
+                 }}
+               >
+                When checked, this carrier is removed from the effective OD boundary calculation
+               </p>
+             </div>
              <div className="control-section spacer-section">
                <h4>Spacer Selection (RACI)</h4>
                <div className="control-group">

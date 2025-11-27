@@ -265,6 +265,24 @@ export const useCircleManagement = () => {
   }, [selectedCircle]);
 
   /**
+   * Toggle label visibility for a specific label type on the selected carrier
+   */
+  const toggleLabelVisibility = useCallback((labelType) => {
+    setCircles(prevCircles => prevCircles.map(circle => {
+      if (circle.id !== selectedCircle) return circle;
+      if (circle.type !== CIRCLE_TYPES.CARRIER_OD) return circle;
+
+      return {
+        ...circle,
+        labelVisibility: {
+          ...circle.labelVisibility,
+          [labelType]: !circle.labelVisibility?.[labelType]
+        }
+      };
+    }));
+  }, [selectedCircle]);
+
+  /**
    * Toggle bypass flag for bell/spacer collision rules on the selected carrier
    */
   const updateBypassBellSpacer = useCallback((enabled) => {
@@ -379,6 +397,8 @@ updateCircle,
     getValidSpacersForSelectedCircle,
     updateCircleSpacer,
     updateBypassBellSpacer,
-    updateExcludeFromEffectiveOD
+    updateExcludeFromEffectiveOD,
+        toggleLabelVisibility
+
   };
 };

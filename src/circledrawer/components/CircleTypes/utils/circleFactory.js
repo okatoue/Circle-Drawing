@@ -47,7 +47,14 @@ export const createCircle = (
     bypassBellSpacer: false,
     // NEW: When true, exclude this circle from effective OD calculation
     excludeFromEffectiveOD: false,
-    spacerRotation: 0
+    spacerRotation: 0,
+    // Label visibility flags for carrier OD circles
+    labelVisibility: {
+      carrier: true,
+      bell: true,
+      spacer: true,
+      spacerConfig: true
+    }
   };
   
   // Auto-select spacer if enabled and this is a carrier

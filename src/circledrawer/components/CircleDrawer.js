@@ -38,7 +38,9 @@ const CircleDrawer = ({ addLabel, updateLabelPosition, updateLabelValue, updateL
     selectSpacerById,
     getValidSpacersForSelectedCircle,
     updateBypassBellSpacer,
-    updateExcludeFromEffectiveOD
+    updateExcludeFromEffectiveOD,
+        toggleLabelVisibility
+
   } = useCircleManagement();
  
    const {
@@ -164,6 +166,7 @@ getSpacerRotation={getSpacerRotation}
           setShowBundleSpacerRunners={setShowBundleSpacerRunners}
           addLabel={addLabel}
 clearLabels={clearLabels}
+toggleLabelVisibility={toggleLabelVisibility}
          />
 
          <Canvas

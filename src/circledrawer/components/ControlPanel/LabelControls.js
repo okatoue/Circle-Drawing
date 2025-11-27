@@ -2,7 +2,7 @@ import React from 'react';
 
 const LabelControls = ({ effectiveData, addLabel, clearLabels, selectedCircleData, toggleLabelVisibility }) => {
   const isCarrierOD = selectedCircleData?.type === 'CARRIER_OD';
-
+  
   return (
     <div className="control-section">
       <h3>Label Controls</h3>
@@ -25,7 +25,7 @@ const LabelControls = ({ effectiveData, addLabel, clearLabels, selectedCircleDat
                 />
                 <span style={{ fontSize: '0.85rem' }}>Carrier OD</span>
               </label>
-
+              
               {selectedCircleData?.bellOD && (
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: '#e2e8f0' }}>
                   <input
@@ -37,7 +37,7 @@ const LabelControls = ({ effectiveData, addLabel, clearLabels, selectedCircleDat
                   <span style={{ fontSize: '0.85rem' }}>Bell OD</span>
                 </label>
               )}
-
+              
               {selectedCircleData?.spacerOD && (
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: '#e2e8f0' }}>
                   <input
@@ -49,7 +49,7 @@ const LabelControls = ({ effectiveData, addLabel, clearLabels, selectedCircleDat
                   <span style={{ fontSize: '0.85rem' }}>Spacer OD</span>
                 </label>
               )}
-
+              
               {selectedCircleData?.selectedSpacer?.spacerName && (
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: '#e2e8f0' }}>
                   <input
@@ -63,7 +63,6 @@ const LabelControls = ({ effectiveData, addLabel, clearLabels, selectedCircleDat
               )}
             </div>
           </div>
-
           <div style={{ borderTop: '1px solid #4a5568', margin: '15px 0' }}></div>
         </>
       )}

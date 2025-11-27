@@ -43,7 +43,10 @@ const ControlPanel = ({
   getSpacerRotation,
   addLabel,
     toggleLabelVisibility,
-  clearLabels
+  clearLabels,
+  startLabelPlacement,
+placementStatus,
+cancelPlacement
 }) => {
   const carrierCount = circles.filter((c) => c.type === 'CARRIER_OD').length;
 
@@ -98,6 +101,7 @@ const ControlPanel = ({
         clearLabels={clearLabels}
          selectedCircleData={selectedCircleData}
         toggleLabelVisibility={toggleLabelVisibility}
+        
       />
 
       <InfoPanel

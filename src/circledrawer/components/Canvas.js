@@ -45,12 +45,12 @@ const Canvas = ({
   runnerHeight,
   showDebugDistances,
   showBundleSpacerRunners,
-addLabel,
-updateLabelPosition,
-updateLabelValue,
-updateLabelTarget,
-removeLabel,
-}) => {  return (
+  addLabel,
+  updateLabelPosition,
+  updateLabelTarget,
+  removeLabel,
+}) => {
+  return (
     <div className="canvas-container">
       <svg
         width="100%"
@@ -140,14 +140,13 @@ removeLabel,
               onEditBlur={saveEdit}
               onBellEditBlur={saveBellEdit}
               onSpacerEditBlur={saveSpacerEdit}
-        isDragging={isDragging}
-addLabel={addLabel}
-updateLabelPosition={updateLabelPosition}
-updateLabelTarget={updateLabelTarget}
-removeLabel={removeLabel}
-panOffset={panOffset}
-
-/>
+              isDragging={isDragging}
+              addLabel={addLabel}
+              updateLabelPosition={updateLabelPosition}
+              updateLabelTarget={updateLabelTarget}
+              removeLabel={removeLabel}
+              panOffset={panOffset}
+            />
           ))}
           
           {/* Debug overlay - shows distances between circles */}

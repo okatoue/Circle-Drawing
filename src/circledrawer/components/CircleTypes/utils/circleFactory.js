@@ -1,61 +1,9 @@
 /**
- * CircleTypes.js - Circle type definitions and utilities
- * 
- * Enhanced with automatic spacer selection from RACI logic.
+ * circleFactory.js - Circle creation and spacer management utilities
  */
 
-import { selectSpacerForPipe } from '../utils/spacerSelection';
-
-// Conversion: 96 pixels = 1 inch (standard screen DPI)
-export const PX_PER_INCH = 96;
-
-// Circle type definitions
-export const CIRCLE_TYPES = {
-  CARRIER_OD: 'CARRIER_OD',
-  CASING: 'CASING',
-  BELL_OD: 'BELL_OD',
-  SPACER_OD: 'SPACER_OD'
-};
-
-// Default colors for each circle type
-export const CIRCLE_COLORS = {
-  [CIRCLE_TYPES.CARRIER_OD]: '#3b82f6',  // Blue
-  [CIRCLE_TYPES.CASING]: '#1e40af',      // Dark blue
-  [CIRCLE_TYPES.BELL_OD]: '#ef4444',     // Red
-  [CIRCLE_TYPES.SPACER_OD]: '#16a34a'    // Green
-};
-
-// Default settings for each circle type
-export const CIRCLE_DEFAULTS = {
-  [CIRCLE_TYPES.CARRIER_OD]: {
-    diameter: 2,
-    minDiameter: 0.25,
-    maxDiameter: 100,
-    step: 0.25,
-    label: 'Carrier OD'
-  },
-  [CIRCLE_TYPES.CASING]: {
-    diameter: 10,
-    minDiameter: 1,
-    maxDiameter: 100,
-    step: 0.5,
-    label: 'Casing'
-  },
-  [CIRCLE_TYPES.BELL_OD]: {
-    diameter: 3,
-    minDiameter: 0.5,
-    maxDiameter: 50,
-    step: 0.25,
-    label: 'Bell OD'
-  },
-  [CIRCLE_TYPES.SPACER_OD]: {
-    diameter: 1.5,
-    minDiameter: 0,
-    maxDiameter: 20,
-    step: 0.25,
-    label: 'Spacer OD'
-  }
-};
+import { selectSpacerForPipe } from '../../../utils/spacerSelection';
+import { CIRCLE_TYPES, CIRCLE_COLORS, CIRCLE_DEFAULTS } from '../constants';
 
 /**
  * Create a new circle with optional auto-spacer selection
@@ -98,7 +46,8 @@ export const createCircle = (
     // NEW: When true, this carrier ignores bell/spacer collision
     bypassBellSpacer: false,
     // NEW: When true, exclude this circle from effective OD calculation
-    excludeFromEffectiveOD: false
+    excludeFromEffectiveOD: false,
+    spacerRotation: 0
   };
   
   // Auto-select spacer if enabled and this is a carrier
@@ -171,62 +120,4 @@ export const setManualSpacerOD = (circle, manualSpacerOD) => {
     selectedSpacer: null,
     autoSpacerEnabled: false
   };
-};
-
-// Get circle display properties
-export const getCircleDisplayProps = (circle) => {
-  const radiusInPixels = (circle.diameter * PX_PER_INCH) / 2;
-  const diameterInPixels = circle.diameter * PX_PER_INCH;
-  const defaults = CIRCLE_DEFAULTS[circle.type];
-  
-  return {
-    radiusInPixels,
-    diameterInPixels,
-    minDiameter: defaults.minDiameter,
-    maxDiameter: defaults.maxDiameter,
-    step: defaults.step
-  };
-};
-
-// Get readable type name
-export const getCircleTypeName = (type) => {
-  return CIRCLE_DEFAULTS[type]?.label || type;
-};
-
-/**
- * Convert inches to pixels using PX_PER_INCH
- * @param {number} inches - Value in inches
- * @returns {number} Value in pixels
- */
-export const inchesToPixels = (inches) => {
-  return inches * PX_PER_INCH;
-};
-
-/**
- * Convert pixels to inches using PX_PER_INCH
- * @param {number} pixels - Value in pixels
- * @returns {number} Value in inches
- */
-export const pixelsToInches = (pixels) => {
-  return pixels / PX_PER_INCH;
-};
-
-/**
- * Get the spacer radius in pixels for rendering
- * @param {Object} circle - Circle with spacerOD
- * @returns {number} Spacer radius in pixels (0 if no spacer)
- */
-export const getSpacerRadiusPixels = (circle) => {
-  if (!circle.spacerOD || circle.spacerOD <= 0) return 0;
-  return (circle.spacerOD / 2) * PX_PER_INCH;
-};
-
-/**
- * Get the bell radius in pixels for rendering
- * @param {Object} circle - Circle with bellOD
- * @returns {number} Bell radius in pixels (0 if no bell)
- */
-export const getBellRadiusPixels = (circle) => {
-  if (!circle.bellOD || circle.bellOD <= 0) return 0;
-  return (circle.bellOD / 2) * PX_PER_INCH;
 };

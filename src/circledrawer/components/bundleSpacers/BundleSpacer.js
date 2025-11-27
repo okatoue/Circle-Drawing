@@ -1,7 +1,37 @@
-import React from 'react';
-import { PX_PER_INCH } from './CircleTypes';
+import React, { useMemo } from 'react';
+import { calculateOffsetPoints } from './utils/offsetCalculations';
+import { generateClosedPath } from './utils/pathGenerators';
 
-const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {
+/**
+ * BundleSpacer - Renders the bundle spacer boundary visualization
+ * Shows the offset area between effective OD and spacer boundary
+ */
+const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {  // ALL HOOKS MUST BE CALLED FIRST, BEFORE ANY RETURNS
+  
+  // Calculate offset points
+  const offsetPoints = useMemo(() => {
+    if (!effectiveData?.hullPoints || !effectiveData?.center || !runnerHeight || runnerHeight <= 0) {
+      return [];
+    }
+    return calculateOffsetPoints(effectiveData.hullPoints, effectiveData.center, runnerHeight);
+  }, [effectiveData?.hullPoints, effectiveData?.center, runnerHeight]);
+
+  // Generate SVG paths
+  const originalPath = useMemo(() => {
+    if (!effectiveData?.hullPoints || effectiveData.hullPoints.length < 3) {
+      return '';
+    }
+    return generateClosedPath(effectiveData.hullPoints);
+  }, [effectiveData?.hullPoints]);
+
+  const offsetPath = useMemo(() => {
+    if (offsetPoints.length === 0) {
+      return '';
+    }
+    return generateClosedPath(offsetPoints);
+  }, [offsetPoints]);
+
+  // NOW do validation and early returns AFTER all hooks
   if (!effectiveData || !runnerHeight || runnerHeight <= 0) {
     return null;
   }
@@ -12,41 +42,9 @@ const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {
     return null;
   }
 
-  // Convert runner height from inches to pixels
-  const offsetDistance = runnerHeight * PX_PER_INCH;
-
-  // Calculate offset points - simply move each point away from center
-  const offsetPoints = hullPoints.map(point => {
-    // Vector from center to point
-    const dx = point.x - center.x;
-    const dy = point.y - center.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    
-    if (distance === 0) return point;
-    
-    // Normalize and extend by offset distance
-    const normalizedDx = dx / distance;
-    const normalizedDy = dy / distance;
-    
-    return {
-      x: point.x + normalizedDx * offsetDistance,
-      y: point.y + normalizedDy * offsetDistance
-    };
-  });
-
-  // Create path for original hull (effective OD)
-  let originalPath = `M ${hullPoints[0].x} ${hullPoints[0].y}`;
-  for (let i = 1; i < hullPoints.length; i++) {
-    originalPath += ` L ${hullPoints[i].x} ${hullPoints[i].y}`;
+  if (!originalPath || !offsetPath) {
+    return null;
   }
-  originalPath += ' Z';
-
-  // Create path for offset hull (bundle spacer)
-  let offsetPath = `M ${offsetPoints[0].x} ${offsetPoints[0].y}`;
-  for (let i = 1; i < offsetPoints.length; i++) {
-    offsetPath += ` L ${offsetPoints[i].x} ${offsetPoints[i].y}`;
-  }
-  offsetPath += ' Z';
 
   return (
     <g className="bundle-spacer">
@@ -57,7 +55,7 @@ const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {
         fillOpacity="0.15"
         stroke="none"
       />
-
+      
       {/* Clear interior (effective OD area) */}
       <path
         d={originalPath}
@@ -65,7 +63,7 @@ const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {
         fillOpacity="0.9"
         stroke="none"
       />
-
+      
       {/* Bundle spacer boundary line (offset) */}
       <path
         d={offsetPath}
@@ -75,7 +73,7 @@ const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {
         strokeDasharray={`${10 / zoom},${5 / zoom}`}
         opacity="0.9"
       />
-
+      
       {/* Label for runner height */}
       <g>
         <rect

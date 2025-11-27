@@ -1,9 +1,8 @@
 import React from 'react';
-import CarrierOD from './CarrierOD';
-import EffectiveDiameter from './EffectiveDiameter';
-import BundleSpacer from './BundleSpacer';
+import CarrierOD from './carrierOD';
+import EffectiveDiameter from './effectiveDiameter';
+import { BundleSpacer, BundleSpacerRunners } from './bundleSpacers';
 import DebugDistances from './DebugDistances';
-import BundleSpacerRunners from './BundleSpacerRunners';
 
 const Canvas = ({
   circles,
@@ -46,8 +45,12 @@ const Canvas = ({
   runnerHeight,
   showDebugDistances,
   showBundleSpacerRunners,
-}) => {
-  return (
+addLabel,
+updateLabelPosition,
+updateLabelValue,
+updateLabelTarget,
+removeLabel,
+}) => {  return (
     <div className="canvas-container">
       <svg
         width="100%"
@@ -137,8 +140,14 @@ const Canvas = ({
               onEditBlur={saveEdit}
               onBellEditBlur={saveBellEdit}
               onSpacerEditBlur={saveSpacerEdit}
-              isDragging={isDragging}
-            />
+        isDragging={isDragging}
+addLabel={addLabel}
+updateLabelPosition={updateLabelPosition}
+updateLabelTarget={updateLabelTarget}
+removeLabel={removeLabel}
+panOffset={panOffset}
+
+/>
           ))}
           
           {/* Debug overlay - shows distances between circles */}

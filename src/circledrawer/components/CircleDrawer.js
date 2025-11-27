@@ -8,11 +8,12 @@
  import { useZoomPan } from '../hooks/useZoomPan';
  import { useCircleEditing } from '../hooks/useCircleEditing';
  import { useCircleDragging } from '../hooks/useCircleDragging';
+ import { useSpacerRotation } from '../hooks/useSpacerRotation';
  import { useCommandLine } from '../hooks/useCommandLine';
  import { useEffectiveDiameter } from '../hooks/useEffectiveDiameter';
  import { CIRCLE_TYPES } from './CircleTypes';
  
- const CircleDrawer = () => {
+const CircleDrawer = ({ addLabel, updateLabelPosition, updateLabelValue, updateLabelTarget, removeLabel, clearLabels }) => {
    const [showEffectiveDiameter, setShowEffectiveDiameter] = useState(true);
    const [showDebugDistances, setShowDebugDistances] = useState(false);
    const [showBundleSpacer, setShowBundleSpacer] = useState(false);
@@ -85,6 +86,13 @@
    } = useCircleDragging(circles, setCircles, selectedCircle, setSelectedCircle, zoom, panOffset, editingCircle);
  
    const {
+  setSpacerRotation,
+  rotateSpacerBy,
+  resetSpacerRotation,
+  getSpacerRotation
+} = useSpacerRotation(circles, updateCircle);
+
+   const {
      isActive: commandLineActive,
      inputValue: commandInputValue,
      prompt: commandPrompt,
@@ -103,7 +111,11 @@
      } else {
        addCircle();
      }
+
+     
    };
+
+   
  
    const handleCommandSubmit = (commandData) => {
      addCircle(commandData);
@@ -145,9 +157,13 @@
           getValidSpacersForSelectedCircle={getValidSpacersForSelectedCircle}
           updateBypassBellSpacer={updateBypassBellSpacer}
           showBundleSpacerRunners={showBundleSpacerRunners}
-                    updateExcludeFromEffectiveOD={updateExcludeFromEffectiveOD}
-
+                    setSpacerRotation={setSpacerRotation}
+rotateSpacerBy={rotateSpacerBy}
+resetSpacerRotation={resetSpacerRotation}
+getSpacerRotation={getSpacerRotation}
           setShowBundleSpacerRunners={setShowBundleSpacerRunners}
+          addLabel={addLabel}
+clearLabels={clearLabels}
          />
 
          <Canvas
@@ -193,6 +209,11 @@
 
         showBundleSpacerRunners={showBundleSpacerRunners}
       setShowBundleSpacerRunners={setShowBundleSpacerRunners}
+      addLabel={addLabel}
+updateLabelPosition={updateLabelPosition}
+updateLabelValue={updateLabelValue}
+updateLabelTarget={updateLabelTarget}
+removeLabel={removeLabel}
          />
        </div>
  

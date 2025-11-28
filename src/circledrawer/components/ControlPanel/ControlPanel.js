@@ -5,6 +5,7 @@ import ViewControls from './ViewControls';
 import DisplayOptions from './DisplayOptions';
 import LabelControls from './LabelControls';
 import InfoPanel from './InfoPanel';
+import { calculateBundleSpacerData } from '../../hooks/useBundleSpacerSelection';
 
 const ControlPanel = ({
   selectedType,
@@ -28,8 +29,6 @@ const ControlPanel = ({
   setShowDebugDistances,
   showBundleSpacer,
   setShowBundleSpacer,
-  runnerHeight,
-  setRunnerHeight,
   effectiveData,
   toggleAutoSpacer,
   selectSpacerById,
@@ -93,8 +92,6 @@ cancelPlacement
         setShowDebugDistances={setShowDebugDistances}
         showBundleSpacer={showBundleSpacer}
         setShowBundleSpacer={setShowBundleSpacer}
-        runnerHeight={runnerHeight}
-        setRunnerHeight={setRunnerHeight}
       />
 
       <LabelControls
@@ -106,11 +103,13 @@ cancelPlacement
         
       />
 
-      <InfoPanel
-        carrierCount={carrierCount}
-        effectiveData={effectiveData}
-        selectedCircleData={selectedCircleData}
-      />
+<InfoPanel
+  carrierCount={carrierCount}
+  effectiveData={effectiveData}
+  selectedCircleData={selectedCircleData}
+  showBundleSpacer={showBundleSpacer}
+  calculateBundleSpacerData={calculateBundleSpacerData}
+/>
     </div>
   );
 };

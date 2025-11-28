@@ -21,8 +21,11 @@ import { assignElementColors } from '../utils/colorUtils';
  * @returns {Object} Bundle spacer data including runners
  */
 export const useBundleSpacerSelection = (effectiveDiameter) => {
-  return useMemo(() => {
-    if (!effectiveDiameter || effectiveDiameter <= 0) {
+return useMemo(() => {
+  console.log('=== useBundleSpacerSelection ===');
+  console.log('effectiveDiameter:', effectiveDiameter);
+  
+  if (!effectiveDiameter || effectiveDiameter <= 0) {
       return {
         selectedSpacer: null,
         configuration: [],
@@ -36,10 +39,12 @@ export const useBundleSpacerSelection = (effectiveDiameter) => {
     }
 
     // Select spacer based on effective OD (no bell OD for bundle)
-    const spacerResult = selectSpacerForPipe({
-      carrierOD: effectiveDiameter,
-      bellOD: 0  // No bell for bundle spacer
-    });
+const spacerResult = selectSpacerForPipe({
+  carrierOD: effectiveDiameter,
+  bellOD: 0  // No bell for bundle
+});
+
+console.log('spacerResult:', spacerResult);
 
     if (!spacerResult) {
       return {
@@ -72,8 +77,11 @@ export const useBundleSpacerSelection = (effectiveDiameter) => {
     // Build runner data using the same logic as individual carriers
     const runnerCountMap = buildRunnerCountMap(configuration);
     const elementColors = assignElementColors(runnerCountMap);
-    const { runners, totalGroups } = generateRunners(configuration, elementColors);
+const { runners, totalGroups } = generateRunners(configuration, elementColors);
 
+console.log('Generated runners:', runners);
+console.log('totalRunners:', runners.length);
+console.log('================================');
     return {
       selectedSpacer: spacerResult,
       configuration,

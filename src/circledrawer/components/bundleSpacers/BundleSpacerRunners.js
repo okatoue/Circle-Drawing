@@ -34,6 +34,13 @@ const BundleSpacerRunners = ({
 
   const { runners, runnerHeight } = bundleSpacerData;
 
+  console.log('=== Bundle Spacer Debug ===');
+console.log('bundleSpacerData:', bundleSpacerData);
+console.log('runners:', runners);
+console.log('runnerPositions:', runnerPositions);
+console.log('runnerHeight:', runnerHeight);
+console.log('========================');
+
   return (
     <g className="bundle-spacer-runners">
       {/* Spacer OD boundary */}

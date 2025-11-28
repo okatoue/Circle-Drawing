@@ -43,7 +43,6 @@ const Canvas = ({
   effectiveData,
   showEffectiveDiameter,
   showBundleSpacer,
-  runnerHeight,
   showDebugDistances,
   showBundleSpacerRunners,
   addLabel,
@@ -87,14 +86,12 @@ const Canvas = ({
         <g transform={`translate(${panOffset.x}, ${panOffset.y}) scale(${zoom})`}>
           <rect x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid)" />
           
-          {/* Render Bundle Spacer (furthest back) */}
-          {showBundleSpacer && effectiveData && runnerHeight > 0 && (
-            <BundleSpacer 
-              effectiveData={effectiveData}
-              runnerHeight={runnerHeight}
-              zoom={zoom}
-            />
-          )}
+{showBundleSpacer && effectiveData && (
+  <BundleSpacer 
+    effectiveData={effectiveData}
+    zoom={zoom}
+  />
+)}
 
           {/* Render Bundle Spacer Runners around the hull */}
           {showBundleSpacerRunners && effectiveData && effectiveData.hullPoints?.length >= 3 && (

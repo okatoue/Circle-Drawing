@@ -18,7 +18,6 @@ const CircleDrawer = ({ addLabel, updateLabelPosition, updateLabelValue, updateL
   const [showEffectiveDiameter, setShowEffectiveDiameter] = useState(true);
   const [showDebugDistances, setShowDebugDistances] = useState(false);
   const [showBundleSpacer, setShowBundleSpacer] = useState(false);
-  const [runnerHeight, setRunnerHeight] = useState(2);
 
   const {
     circles,
@@ -171,8 +170,6 @@ useEffect(() => {
           setShowDebugDistances={setShowDebugDistances}
           showBundleSpacer={showBundleSpacer}
           setShowBundleSpacer={setShowBundleSpacer}
-          runnerHeight={runnerHeight}
-          setRunnerHeight={setRunnerHeight}
           effectiveData={effectiveData}
           toggleAutoSpacer={toggleAutoSpacer}
           selectSpacerById={selectSpacerById}
@@ -228,7 +225,6 @@ clearLabels={clearLabels}
           effectiveData={effectiveData}
           showEffectiveDiameter={showEffectiveDiameter}
           showBundleSpacer={showBundleSpacer}
-          runnerHeight={runnerHeight}
           showDebugDistances={showDebugDistances}
           showBundleSpacerRunners={showBundleSpacerRunners}
           setShowBundleSpacerRunners={setShowBundleSpacerRunners}

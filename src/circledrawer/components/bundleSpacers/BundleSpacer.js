@@ -1,21 +1,28 @@
 import React, { useMemo } from 'react';
 import { calculateOffsetPoints } from './utils/offsetCalculations';
 import { generateClosedPath } from './utils/pathGenerators';
+import { useBundleSpacerSelection } from '../../hooks/useBundleSpacerSelection';
 
 /**
  * BundleSpacer - Renders the bundle spacer boundary visualization
  * Shows the offset area between effective OD and spacer boundary
  */
-const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {  // ALL HOOKS MUST BE CALLED FIRST, BEFORE ANY RETURNS
+const BundleSpacer = ({ effectiveData, zoom }) => {
   
   // Calculate offset points
-  const offsetPoints = useMemo(() => {
-    if (!effectiveData?.hullPoints || !effectiveData?.center || !runnerHeight || runnerHeight <= 0) {
-      return [];
-    }
-    return calculateOffsetPoints(effectiveData.hullPoints, effectiveData.center, runnerHeight);
-  }, [effectiveData?.hullPoints, effectiveData?.center, runnerHeight]);
+// Get auto-selected spacer data
+const bundleSpacerData = useBundleSpacerSelection(effectiveData?.effectiveDiameter);
 
+// Calculate offset points using auto-selected runner height
+const offsetPoints = useMemo(() => {
+  if (!effectiveData?.hullPoints || !effectiveData?.center) {
+    return [];
+  }
+  if (!bundleSpacerData?.runnerHeight || bundleSpacerData.runnerHeight <= 0) {
+    return [];
+  }
+  return calculateOffsetPoints(effectiveData.hullPoints, effectiveData.center, bundleSpacerData.runnerHeight);
+}, [effectiveData?.hullPoints, effectiveData?.center, bundleSpacerData?.runnerHeight]);
   // Generate SVG paths
   const originalPath = useMemo(() => {
     if (!effectiveData?.hullPoints || effectiveData.hullPoints.length < 3) {
@@ -31,10 +38,15 @@ const BundleSpacer = ({ effectiveData, runnerHeight, zoom }) => {  // ALL HOOKS 
     return generateClosedPath(offsetPoints);
   }, [offsetPoints]);
 
-  // NOW do validation and early returns AFTER all hooks
-  if (!effectiveData || !runnerHeight || runnerHeight <= 0) {
-    return null;
-  }
+// NOW do validation and early returns AFTER all hooks
+if (!effectiveData || !bundleSpacerData?.hasValidSelection) {
+  return null;
+}
+if (!bundleSpacerData.runnerHeight || bundleSpacerData.runnerHeight <= 0) {
+  return null;
+}
+
+const runnerHeight = bundleSpacerData.runnerHeight;
 
   const { hullPoints, center } = effectiveData;
   

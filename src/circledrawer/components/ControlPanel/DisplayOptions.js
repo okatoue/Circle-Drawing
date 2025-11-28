@@ -6,9 +6,7 @@ const DisplayOptions = ({
   showDebugDistances,
   setShowDebugDistances,
   showBundleSpacer,
-  setShowBundleSpacer,
-  runnerHeight,
-  setRunnerHeight
+  setShowBundleSpacer
 }) => {
   return (
     <div className="control-section">
@@ -46,21 +44,6 @@ const DisplayOptions = ({
           Show Bundle Spacer
         </label>
       </div>
-
-      {showBundleSpacer && (
-        <div className="control-group">
-          <label>Bundle Runner Height (in):</label>
-          <input
-            type="number"
-            value={runnerHeight}
-            onChange={(e) => setRunnerHeight(Number(e.target.value))}
-            min="0"
-            max="10"
-            step="0.25"
-            className="diameter-input"
-          />
-        </div>
-      )}
     </div>
   );
 };

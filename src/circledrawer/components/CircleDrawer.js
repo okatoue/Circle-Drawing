@@ -138,6 +138,8 @@ useEffect(() => {
     addCircle(commandData);
   };
 
+    const [selectedBundleSpacerId, setSelectedBundleSpacerId] = useState(null);
+
   const [showBundleSpacerRunners, setShowBundleSpacerRunners] = useState(false);
 
   return (
@@ -185,7 +187,10 @@ useEffect(() => {
 addLabel={addLabel}
 clearLabels={clearLabels}
           toggleLabelVisibility={toggleLabelVisibility}
+          selectedBundleSpacerId={selectedBundleSpacerId}
+          setSelectedBundleSpacerId={setSelectedBundleSpacerId}
         />
+
 
         <Canvas
           circles={circles}
@@ -233,7 +238,9 @@ clearLabels={clearLabels}
           updateLabelValue={updateLabelValue}
           updateLabelTarget={updateLabelTarget}
           removeLabel={removeLabel}
+          selectedBundleSpacerId={selectedBundleSpacerId}
        />
+
       </div>
 
       <CommandLine

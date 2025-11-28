@@ -7,11 +7,14 @@ import { useBundleSpacerSelection } from '../../hooks/useBundleSpacerSelection';
  * BundleSpacer - Renders the bundle spacer boundary visualization
  * Shows the offset area between effective OD and spacer boundary
  */
-const BundleSpacer = ({ effectiveData, zoom }) => {
+const BundleSpacer = ({ effectiveData, zoom, selectedBundleSpacerId }) => {
   
   // Calculate offset points
 // Get auto-selected spacer data
-const bundleSpacerData = useBundleSpacerSelection(effectiveData?.effectiveDiameter);
+const bundleSpacerData = useBundleSpacerSelection(
+  effectiveData?.effectiveDiameter,
+  selectedBundleSpacerId
+);
 
 // Calculate offset points using auto-selected runner height
 const offsetPoints = useMemo(() => {

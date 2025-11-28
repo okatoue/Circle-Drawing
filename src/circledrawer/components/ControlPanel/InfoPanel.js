@@ -6,8 +6,11 @@ const InfoPanel = ({
   effectiveData, 
   selectedCircleData, 
   showBundleSpacer, 
-  calculateBundleSpacerData 
+  calculateBundleSpacerData,
+  selectedBundleSpacerId,
+  setSelectedBundleSpacerId,
 }) => {
+
   return (
     <>
       <div className="control-section info-section">
@@ -35,9 +38,45 @@ const InfoPanel = ({
       {showBundleSpacer && effectiveData && effectiveData.effectiveDiameter > 0 && (
         <div className="control-section bundle-spacer-info">
           <h3>Bundle Spacer</h3>
+                    {(() => {
+            const bundleSpacerData = calculateBundleSpacerData(
+              effectiveData.effectiveDiameter,
+              selectedBundleSpacerId
+            );
+
+            if (bundleSpacerData && bundleSpacerData.validSpacers && bundleSpacerData.validSpacers.length > 0) {
+              return (
+                <div className="info-item">
+                  <span className="info-label">Select Spacer:</span>
+                  <select
+                    className="info-select"
+                    value={selectedBundleSpacerId || ''}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSelectedBundleSpacerId(value === '' ? null : value);
+                    }}
+                  >
+                    <option value="">
+                      Auto (recommended)
+                    </option>
+                    {bundleSpacerData.validSpacers.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name || s.spacerName || s.id}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              );
+            }
+
+            return null;
+          })()}
+
           {(() => {
-            const bundleSpacerData = calculateBundleSpacerData(effectiveData.effectiveDiameter);
-            
+            const bundleSpacerData = calculateBundleSpacerData(
+              effectiveData.effectiveDiameter,
+              selectedBundleSpacerId
+            );        
             if (!bundleSpacerData || !bundleSpacerData.hasValidSelection) {
               return (
                 <div className="info-grid">
@@ -51,7 +90,9 @@ const InfoPanel = ({
             return (
               <div className="info-grid">
                 <div className="info-item">
-                  <span className="info-label">Auto-Selected:</span>
+                  <span className="info-label">
+                    Selected Spacer{selectedBundleSpacerId ? ' (manual)' : ' (auto)'}:
+                  </span>
                   <span className="info-value">{bundleSpacerData.selectedSpacer?.spacerName}</span>
                 </div>
                 <div className="info-item">

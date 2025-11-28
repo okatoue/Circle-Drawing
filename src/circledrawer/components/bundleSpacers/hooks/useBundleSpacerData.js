@@ -7,22 +7,47 @@ import { calculateOffsetPoints } from '../utils/offsetCalculations';
 import { generateClosedPath } from '../utils/pathGenerators';
 import { useBundleSpacerSelection } from '../../../hooks/useBundleSpacerSelection';
 
-export const useBundleSpacerData = (effectiveData) => {
+export const useBundleSpacerData = (effectiveData, selectedBundleSpacerId) => {
   // Get spacer selection based on effective diameter
-  const bundleSpacerData = useBundleSpacerSelection(effectiveData?.effectiveDiameter);
-
-  // Calculate runner positions around the hull
+  const bundleSpacerData = useBundleSpacerSelection(
+    effectiveData?.effectiveDiameter,
+    selectedBundleSpacerId
+  );
   const runnerPositions = useMemo(() => {
     if (!effectiveData?.hullPoints || effectiveData.hullPoints.length < 3) {
+      console.log('useBundleSpacerData: no or too few hullPoints');
       return [];
     }
     if (!bundleSpacerData?.runners || bundleSpacerData.runners.length === 0) {
+      console.log('useBundleSpacerData: no runners in bundleSpacerData');
       return [];
     }
 
-    const numRunners = bundleSpacerData.totalRunners;
-    return distributePointsWithOutwardNormals(effectiveData.hullPoints, numRunners);
-  }, [effectiveData?.hullPoints, bundleSpacerData?.runners, bundleSpacerData?.totalRunners]);
+    const numRunners =
+      bundleSpacerData.totalRunners && bundleSpacerData.totalRunners > 0
+        ? bundleSpacerData.totalRunners
+        : bundleSpacerData.runners.length;
+
+    const positions = distributePointsWithOutwardNormals(
+      effectiveData.hullPoints,
+      numRunners
+    );
+
+    console.log(
+      'useBundleSpacerData → numRunners:',
+      numRunners,
+      'runnerPositions length:',
+      positions.length
+    );
+
+    return positions;
+  }, [
+    effectiveData?.hullPoints,
+    bundleSpacerData?.runners,
+    bundleSpacerData?.totalRunners,
+  ]);
+
+
 
   // Calculate offset hull points for the spacer OD boundary
   const offsetHullPoints = useMemo(() => {

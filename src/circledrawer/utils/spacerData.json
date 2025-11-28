@@ -134,7 +134,7 @@
     },
       {
       "id": 9,
-      "name": "F/G 75",
+    "name": "F/G 75",
       "fixedRunnerHeight": 2.95,
       "maxWeight": 1870,
       "carrierODRanges": [

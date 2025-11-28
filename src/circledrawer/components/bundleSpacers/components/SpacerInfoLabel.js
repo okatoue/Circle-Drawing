@@ -54,4 +54,4 @@ const SpacerInfoLabel = ({ center, bundleSpacerData, runnerHeight, zoom }) => {
   );
 };
 
-export default SpacerInfoLabel;
+export default SpacerInfoLabel

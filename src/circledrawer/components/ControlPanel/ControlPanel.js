@@ -14,7 +14,7 @@ const ControlPanel = ({
   updateDiameter,
   updateBellOD,
   updateSpacerOD,
-   updateWallThickness,
+  updateWallThickness,
   updateCircle,
   addCircle,
   deleteCircle,
@@ -42,12 +42,15 @@ const ControlPanel = ({
   resetSpacerRotation,
   getSpacerRotation,
   addLabel,
-    toggleLabelVisibility,
+  toggleLabelVisibility,
   clearLabels,
   startLabelPlacement,
-placementStatus,
-cancelPlacement
+  placementStatus,
+  cancelPlacement,
+  selectedBundleSpacerId,
+  setSelectedBundleSpacerId,
 }) => {
+
   const carrierCount = circles.filter((c) => c.type === 'CARRIER_OD').length;
 
   return (
@@ -109,7 +112,11 @@ cancelPlacement
   selectedCircleData={selectedCircleData}
   showBundleSpacer={showBundleSpacer}
   calculateBundleSpacerData={calculateBundleSpacerData}
+  selectedBundleSpacerId={selectedBundleSpacerId}
+  setSelectedBundleSpacerId={setSelectedBundleSpacerId}
 />
+
+
     </div>
   );
 };

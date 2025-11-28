@@ -11,10 +11,12 @@ const BundleSpacerRunners = ({
   effectiveData, 
   zoom = 1,
   showRunners = true,
-  onSpacerSelected
+  onSpacerSelected,
+  selectedBundleSpacerId,
 }) => {
   // Get all calculated data
-  const { bundleSpacerData, runnerPositions, spacerODPath } = useBundleSpacerData(effectiveData);
+  const { bundleSpacerData, runnerPositions, spacerODPath } =
+    useBundleSpacerData(effectiveData, selectedBundleSpacerId);
 
   // Notify parent of spacer selection
   useEffect(() => {
@@ -22,24 +24,30 @@ const BundleSpacerRunners = ({
       onSpacerSelected(bundleSpacerData);
     }
   }, [bundleSpacerData, onSpacerSelected]);
-
-  // Early returns after all hooks
-  if (!showRunners || !effectiveData || !bundleSpacerData?.hasValidSelection) {
+  // Early guard
+  if (!showRunners || !effectiveData) {
     return null;
   }
 
-  if (runnerPositions.length === 0 || !bundleSpacerData.runners) {
+  console.log('=== Bundle Spacer Debug (BundleSpacerRunners) ===');
+  console.log('hasValidSelection:', bundleSpacerData?.hasValidSelection);
+  console.log('runners length:', bundleSpacerData?.runners?.length || 0);
+  console.log('totalRunners:', bundleSpacerData?.totalRunners);
+  console.log('runnerPositions length:', runnerPositions.length);
+  console.log('===============================================');
+
+  if (!bundleSpacerData?.hasValidSelection) {
     return null;
   }
 
-  const { runners, runnerHeight } = bundleSpacerData;
+  const runners = bundleSpacerData.runners || [];
+  const runnerHeight = bundleSpacerData.runnerHeight || 0;
 
-  console.log('=== Bundle Spacer Debug ===');
-console.log('bundleSpacerData:', bundleSpacerData);
-console.log('runners:', runners);
-console.log('runnerPositions:', runnerPositions);
-console.log('runnerHeight:', runnerHeight);
-console.log('========================');
+  if (runners.length === 0 || runnerPositions.length === 0) {
+    return null;
+  }
+
+
 
   return (
     <g className="bundle-spacer-runners">

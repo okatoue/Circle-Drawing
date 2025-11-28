@@ -50,6 +50,7 @@ const Canvas = ({
   updateLabelTarget,
   removeLabel,
   updateLabelValue,
+  selectedBundleSpacerId,
 }) => {
   return (
     <div className="canvas-container">
@@ -85,23 +86,27 @@ const Canvas = ({
         
         <g transform={`translate(${panOffset.x}, ${panOffset.y}) scale(${zoom})`}>
           <rect x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid)" />
-          
 {showBundleSpacer && effectiveData && (
   <BundleSpacer 
     effectiveData={effectiveData}
     zoom={zoom}
+    selectedBundleSpacerId={selectedBundleSpacerId}
   />
 )}
 
+
           {/* Render Bundle Spacer Runners around the hull */}
-          {showBundleSpacerRunners && effectiveData && effectiveData.hullPoints?.length >= 3 && (
+          {effectiveData && effectiveData.hullPoints?.length >= 3 && (
             <BundleSpacerRunners
               effectiveData={effectiveData}
               zoom={zoom}
               showRunners={true}
+              selectedBundleSpacerId={selectedBundleSpacerId}
             />
           )}
-          
+
+
+
           {/* Render Effective Diameter boundary */}
           {showEffectiveDiameter && effectiveData && (
             <EffectiveDiameter 

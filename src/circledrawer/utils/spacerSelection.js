@@ -67,12 +67,23 @@ export function selectSpacerForPipe(pipe) {
   }
   
   // Sort by smallest runner height first (tightest fit)
-  // This matches RACI's preference for minimal clearance
   validSpacers.sort((a, b) => a.fixedRunnerHeight - b.fixedRunnerHeight);
   
   const bestSpacer = validSpacers[0];
   const spacerOD = carrierOD + bestSpacer.fixedRunnerHeight * 2;
   const bellClearance = numBellOD > 0 ? (spacerOD - numBellOD) / 2 : null;
+  
+  // Get configuration for this spacer + carrier OD
+  const range = bestSpacer.carrierODRanges.find(
+    (r) => carrierOD >= r.min && carrierOD <= r.max
+  );
+  
+  const configuration = range && range.elements 
+    ? Object.entries(range.elements).map(([type, quantity]) => ({
+        type,
+        quantity
+      }))
+    : [];
   
   return {
     spacerId: bestSpacer.id,
@@ -80,6 +91,7 @@ export function selectSpacerForPipe(pipe) {
     runnerHeight: bestSpacer.fixedRunnerHeight,
     spacerOuterDiameter: spacerOD,
     bellClearance,
+    configuration
   };
 }
 

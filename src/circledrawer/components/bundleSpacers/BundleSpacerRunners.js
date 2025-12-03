@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import { useBundleSpacerData } from './hooks/useBundleSpacerData';
 import BandSegment from './components/BandSegment';
-import RunnerElement from './components/RunnerElement';
+import BundleRunnerElement from './components/BundleRunnerElement';
 import SpacerInfoLabel from './components/SpacerInfoLabel';
 
 const BundleSpacerRunners = ({ 
@@ -74,17 +74,17 @@ const BundleSpacerRunners = ({
         />
       ))}
 
-      {/* Runner elements */}
-      {runnerPositions.map((pos, index) => (
-        <RunnerElement
-          key={`runner-${index}`}
-          position={pos}
-          runner={runners[index % runners.length]}
-          runnerHeight={runnerHeight}
-          zoom={zoom}
-          index={index}
-        />
-      ))}
+{/* Runner elements */}
+{runnerPositions.map((pos, index) => (
+  <BundleRunnerElement
+    key={`runner-${index}`}
+    position={pos}
+    runner={runners[index % runners.length]}
+    runnerHeight={runnerHeight}
+    zoom={zoom}
+    index={index}
+  />
+))}
 
       {/* Info label */}
       <SpacerInfoLabel

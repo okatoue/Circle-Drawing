@@ -48,7 +48,7 @@ const InfoPanel = ({
               return (
                 <div className="info-item">
                   <span className="info-label">Select Spacer:</span>
-                  <select
+                                   <select
                     className="info-select"
                     value={selectedBundleSpacerId || ''}
                     onChange={(e) => {
@@ -59,12 +59,16 @@ const InfoPanel = ({
                     <option value="">
                       Auto (recommended)
                     </option>
+                    <option value="NONE">
+                      No spacer
+                    </option>
                     {bundleSpacerData.validSpacers.map((s) => (
                       <option key={s.id} value={s.id}>
                         {s.name || s.spacerName || s.id}
                       </option>
                     ))}
                   </select>
+
                 </div>
               );
             }
@@ -72,16 +76,44 @@ const InfoPanel = ({
             return null;
           })()}
 
-          {(() => {
+              {(() => {
             const bundleSpacerData = calculateBundleSpacerData(
               effectiveData.effectiveDiameter,
               selectedBundleSpacerId
             );        
+
+            // Case 1: user explicitly chose "No spacer"
+            if (selectedBundleSpacerId === 'NONE') {
+              return (
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="info-label">Selected Spacer:</span>
+                    <span className="info-value">No spacer</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Total Runners:</span>
+                    <span className="info-value">0</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Runner Height:</span>
+                    <span className="info-value">0.00"</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Spacer OD:</span>
+                    <span className="info-value">—</span>
+                  </div>
+                </div>
+              );
+            }
+
+            // Case 2: no valid spacer exists for this OD
             if (!bundleSpacerData || !bundleSpacerData.hasValidSelection) {
               return (
                 <div className="info-grid">
                   <div className="info-item" style={{color: 'red'}}>
-                    <span className="info-value">No spacer available for Effective OD: {effectiveData.effectiveDiameter.toFixed(2)}"</span>
+                    <span className="info-value">
+                      No spacer available for Effective OD: {effectiveData.effectiveDiameter.toFixed(2)}"
+                    </span>
                   </div>
                 </div>
               );
@@ -95,6 +127,7 @@ const InfoPanel = ({
                   </span>
                   <span className="info-value">{bundleSpacerData.selectedSpacer?.spacerName}</span>
                 </div>
+
                 <div className="info-item">
                   <span className="info-label">Configuration:</span>
                   <span className="info-value">

@@ -44,6 +44,17 @@ export const useBundleSpacerSelection = (effectiveDiameter, selectedSpacerId) =>
     const pipe = { carrierOD: effectiveDiameter, bellOD: 0 };
     const validSpacers = getValidSpacersForPipe(pipe);
 
+        // Explicit "No spacer" selection for bundle
+    if (selectedSpacerId === 'NONE') {
+      console.log('useBundleSpacerSelection: NO SPACER selected for bundle');
+      return {
+        ...baseData,
+        validSpacers,
+        noSpacerSelected: true,
+      };
+    }
+
+
   let spacerResult = null;
 
   if (selectedSpacerId != null) {
@@ -175,6 +186,18 @@ export const calculateBundleSpacerData = (effectiveDiameter, selectedSpacerId) =
   const pipe = { carrierOD: effectiveDiameter, bellOD: 0 };
   const validSpacers = getValidSpacersForPipe(pipe);
 
+
+    // Explicit "No spacer" selection for bundle (non-hook usage)
+  if (selectedSpacerId === 'NONE') {
+    console.log('calculateBundleSpacerData: NO SPACER selected for bundle');
+    return {
+      ...baseData,
+      validSpacers,
+      noSpacerSelected: true,
+    };
+  }
+
+  
   let spacerResult = null;
 
     if (selectedSpacerId != null) {
